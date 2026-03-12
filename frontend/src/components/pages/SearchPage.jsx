@@ -1,5 +1,5 @@
-export default function SearchPage(){
+export default function SearchPage({category}){
     return(
-        <div>SERACHING </div>
+        <div>SERACHING {category === 'music' ? 'Музыка' : 'Кино'}</div>
     )
 }

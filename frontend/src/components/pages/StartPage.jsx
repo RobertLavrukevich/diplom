@@ -36,9 +36,9 @@ export default function StartPage(){
             className='cinemachoice'
             onClick={() => navigate('/cinema')}
           >
+            <img src="/icons/film-alt-svgrepo-com.svg" alt="film" className='filmimg'/>
             <div className="choice-content">
               <h2>КИНО</h2>
-              <p>Рецензии, новости, рейтинги</p>
               <span className="choice-button">← Перейти</span>
             </div>
             <div className="choice-overlay"></div>
@@ -48,17 +48,16 @@ export default function StartPage(){
             className='musicchoice'
             onClick={() => navigate('/music')}
           >
+            <img src="/icons/music-svgrepo-com.svg" alt="music" className='musicimg'/>
             <div className="choice-content">
               <h2>МУЗЫКА</h2>
-              <p>Рецензии, новости, чарты</p>
               <span className="choice-button">Перейти →</span>
             </div>
             <div className="choice-overlay"></div>
           </div>
         </div>
       </main>
-
-            <Footer className="footermain"></Footer>
+          <Footer className="footermain"></Footer>
         </div>
   );
 };

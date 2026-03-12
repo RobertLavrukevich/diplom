@@ -5,9 +5,9 @@ import Footer from '../OtherComponents/Footer';
 export default function CinemaSection() {
   return (
     <div className="cinema-layout">
-      <Header category="cinema" /> {/* Передаём категорию в header */}
+      <Header category="cinema" />
       <main className="content">
-        <Outlet /> {/* Здесь будут отображаться дочерние страницы */}
+        <Outlet />
       </main>
       <Footer />
     </div>

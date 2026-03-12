@@ -18,10 +18,8 @@ export default function App() {
   return(
     <BrowserRouter>
       <Routes>
-        {/* Главная страница */}
         <Route path="/" element={<StartPage />} />
         
-        {/* Раздел Музыки */}
         <Route path="/music" element={<MusicSection />}>
           <Route index element={<MusicHomePage />} />
           <Route path="reviews" element={<ReviewsPage category="music" />} />
@@ -32,7 +30,6 @@ export default function App() {
           <Route path="search" element={<SearchPage />} />
         </Route>
         
-        {/* Раздел Кино */}
         <Route path="/cinema" element={<CinemaSection />}>
           <Route index element={<CinemaHomePage />} />
           <Route path="reviews" element={<ReviewsPage category="cinema" />} />
@@ -43,10 +40,8 @@ export default function App() {
           <Route path="search" element={<SearchPage />} />
         </Route>
         
-        {/* Аккаунт пользователя (общий) */}
         <Route path="/account" element={<AccountPage />} />
         
-        {/* Редirect для старых путей */}
         <Route path="/useraccount" element={<AccountPage />} />
       </Routes>
     </BrowserRouter>

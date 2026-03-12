@@ -1,0 +1,10 @@
+.mainblock{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
+
+h1{
+    text-align: center;
+    margin: 3% 0;
+}

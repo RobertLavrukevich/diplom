@@ -109,14 +109,12 @@ header {
     height: 40px;
 }
 
-/* ===== НИЖНЯЯ ЧАСТЬ HEADER ===== */
 .header-down {
     background: white;
     padding: 0 3rem;
     border-bottom: 1px solid #eaeef2;
 }
 
-/* Навигационная панель */
 .navigation-bar {
     display: flex;
     gap: 2.5rem;
@@ -143,7 +141,6 @@ header {
     color: #3e3e3e;
 }
 
-/* Анимация подчеркивания при наведении */
 .navigation-bar a::after {
     content: '';
     position: absolute;
@@ -161,11 +158,6 @@ header {
     transform: translateX(-50%) scaleX(1);
 }
 
-/* Активная ссылка */
-/* .navigation-bar a.active {
-    color: #454545;
-} */
-
 .navigation-bar a.active::after {
     transform: translateX(-50%) scaleX(1);
 }
@@ -176,7 +168,6 @@ header {
     height: 15px;
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1024px) {
     .header-up {
         padding: 0.8rem 2rem;
@@ -193,7 +184,6 @@ header {
 
 @media (max-width: 768px) {
     .header-up {
-        flex-direction: column;
         gap: 1rem;
         padding: 1rem;
     }

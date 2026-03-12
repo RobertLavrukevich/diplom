@@ -25,7 +25,6 @@ export default function Footer(){
           </div>
         </div>
 
-        {/* Правая часть - информация */}
         <div className="footer-info">
           <div className="footer-copyright">
             «MY REVIEW» © 2026

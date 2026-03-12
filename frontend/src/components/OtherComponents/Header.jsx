@@ -1,7 +1,7 @@
 import '/src/styles/Header.css'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-export default function Header({ category = 'music' }) { // category по умолчанию music
+export default function Header({ category = 'music' }) {
     const navigate = useNavigate();
     const location = useLocation();
     const basePath = `/${category}`;
@@ -14,10 +14,6 @@ export default function Header({ category = 'music' }) { // category по умо
         }
     };
 
-    // Определяем активную ссылку
-    // const isActive = (path) => {
-    //     return location.pathname === `${basePath}${path}` ? 'active' : '';
-    // };
 
     return (
         <header>

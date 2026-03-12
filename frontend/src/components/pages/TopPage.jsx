@@ -1,5 +1,5 @@
-export default function TopPage(){
+export default function TopPage({category}){
     return(
-        <div>TOP-100</div>
+        <div>TOP-100{category === 'music' ? 'Музыка' : 'Кино'}</div>
     )
 }
