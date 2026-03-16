@@ -1,0 +1,177 @@
+.work-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.loading {
+    text-align: center;
+    padding: 60px;
+    font-size: 18px;
+    color: #666;
+}
+
+.work-header {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    margin-bottom: 50px;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.work-main-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.work-main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.work-title {
+    font-size: 2.5em;
+    color: #333;
+    margin: 0;
+}
+
+.work-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.work-meta p {
+    margin: 0;
+    color: #555;
+}
+
+.work-meta strong {
+    color: #333;
+    /* width: 100px; */
+    display: inline-block;
+}
+
+.work-rating-block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 0;
+}
+
+.work-average-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-label {
+    font-size: 16px;
+    color: #666;
+}
+
+.rating-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 100%;
+    padding: 4px 7px;
+    background: #2365C7;
+
+}
+
+.work-reviews-count {
+    font-size: 14px;
+    color: #666;
+    background: #f0f0f0;
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+.work-artists {
+    margin-top: 10px;
+}
+
+.work-artists strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.artists-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.work-description {
+    line-height: 1.8;
+    color: #444;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.reviews-section {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.reviews-title {
+    font-size: 1.8em;
+    color: #333;
+    margin: 0 0 30px 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #000;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.comment-card-block{
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .work-header {
+        grid-template-columns: 1fr;
+    }
+    
+    .work-main-image {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .work-title {
+        font-size: 2em;
+    }
+    
+    .rating-value {
+        font-size: 28px;
+    }
+    
+    .work-rating-block {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+
+

@@ -1,0 +1,69 @@
+.card-block{
+    border: 1px solid black;
+    border-radius: 7px;
+    height: auto;
+    width: calc(252px - 16px);
+    box-sizing: border-box;    
+    margin-bottom: 3%;
+}
+
+.workimg{
+    width: 100%;
+    border-radius: 7px;
+}
+
+.work-name{
+font-size: 17px;
+font-weight: 600;
+padding: 3px 0;
+}
+
+.name-artist{
+    font-size: 15px;
+    font-weight: 400;
+    color:rgb(63, 63, 63);
+    padding: 3px 0;
+
+}
+
+.rating{
+    border:1px solid black;
+    border-radius: 100%;
+    padding: 6px;
+    width:max-content;
+    font-weight: 800;
+    background: #2365C7;
+    color:white;
+}
+
+.workcardbtn{
+    margin-top: 7px;
+    width: 100%;
+    height: 30px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+    .card-block {
+        width: calc(25% - 16px);
+    }
+}
+
+@media (max-width: 900px) {
+    .card-block {
+        width: calc(33.333% - 16px); 
+    }
+}
+
+@media (max-width: 600px) {
+    .card-block {
+        width: calc(50% - 16px); 
+    }
+}
+
+@media (max-width: 400px) {
+    .card-block {
+        width: 100%;
+    }
+}

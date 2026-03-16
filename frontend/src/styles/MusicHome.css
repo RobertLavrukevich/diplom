@@ -1,0 +1,49 @@
+.latest-releases-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 5% 5% 5%;
+    gap: 4%;
+}
+
+.card-content{
+    padding: 6px;
+}
+
+h2{
+    margin-top: 5%;
+    margin-bottom: 1%;
+}
+
+.latest-comments-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 5% 2% 2%;
+    gap: 3%;
+}
+
+
+.actual-block{
+     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 5% 5% 5%;
+    gap: 4%;
+}
+
+.active-icon{
+    width: 3%;
+}
+
+.firsth2{
+    align-items: center;
+}
+
+.firsth2, .secondh2, .thirdh2{
+    display: flex;
+    justify-content: center;
+}

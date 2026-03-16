@@ -2,7 +2,7 @@ import '/src/styles/Statistica.css'
 export default function StatisticaMusic({users, tracks, albums, comments}){
     return(
         <div className="statblock">
-            <h2>Статистика</h2>
+            <h2 className='stath2'>Статистика</h2>
             <div className="statdata">
                 <ul className='datatext'>
                     <li><img src="/icons/avatar-svgrepo-com.svg" className='icon' alt="news" /> Всего пользователей</li>

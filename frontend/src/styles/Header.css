@@ -109,6 +109,12 @@ header {
     height: 40px;
 }
 
+.useravatar{
+    display: block;
+    margin: auto;
+    width: 90%;
+}
+
 .header-down {
     background: white;
     padding: 0 3rem;

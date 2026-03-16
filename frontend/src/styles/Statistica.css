@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Play:wght@400;700&display=swap');
 
 .statblock{
+    display: flex;
     font-family: "Play", sans-serif;
-    margin: 5%;
+    justify-content: center;
+    justify-self: center;
+    margin-top: 3%;
 }
 .statdata{
     display: flex;
@@ -13,8 +16,4 @@
 
 li{
     list-style-type: none;
-}
-
-h2{
-    margin-left: 3%;
 }

@@ -4,17 +4,21 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 export default function Header({ category = 'music' }) {
     const navigate = useNavigate();
     const location = useLocation();
-    const basePath = `/${category}`;
+    
+    const currentCategory = category || (location.pathname.includes('/music') ? 'music' : 'cinema');
+    const basePath = `/${currentCategory}`;
 
     const handleSearch = (e) => {
         e.preventDefault();
         const searchQuery = e.target.search.value;
         if (searchQuery.trim()) {
-            navigate(`/${category}/search?q=${encodeURIComponent(searchQuery)}`);
+            navigate(`/${currentCategory}/search?q=${encodeURIComponent(searchQuery)}`);
         }
     };
 
-
+    const isActive = (path) => {
+        return location.pathname === `${basePath}${path}` ? 'active' : '';
+    };
     return (
         <header>
             <div className='header-up'>
@@ -36,7 +40,7 @@ export default function Header({ category = 'music' }) {
                         </button>
                     </form>
                 </div>     
-                <Link to="/account"><div className='user'></div></Link>
+                <Link to="/account"><div className='user'><img className='useravatar' src="/icons/avatar-svgrepo-com.svg" alt="useravatar" /></div></Link>
             </div>
 
             <div className='header-down'>
@@ -49,14 +53,14 @@ export default function Header({ category = 'music' }) {
                         <img src="/icons/news-svgrepo-com.svg" className='icon' alt="news" />
                         Новости
                     </Link>
-                    <Link to={`${basePath}/top100`} className={location.pathname.includes('/top100') ? 'active' : ''}>
+                    <Link to={`${basePath}/top30`} className={location.pathname.includes('/top30') ? 'active' : ''}>
                         <img src="/icons/rating-svgrepo-com.svg" className='icon' alt="top" />
-                        ТОП-100
+                        ТОП-30
                     </Link>
-                    <Link to={`${basePath}/reviews`} className={location.pathname.includes('/reviews') ? 'active' : ''}>
+                    {/* <Link to={`${basePath}/reviews`} className={location.pathname.includes('/reviews') ? 'active' : ''}>
                         <img src="/icons/comment-svgrepo-com.svg" className='icon' alt="reviews" />
                         Рецензии
-                    </Link>
+                    </Link> */}
                     <Link to={`${basePath}/faq`} className={location.pathname.includes('/faq') ? 'active' : ''}>
                         <img src="/icons/question-circle-svgrepo-com.svg" className='icon' alt="faq" />
                         FAQ

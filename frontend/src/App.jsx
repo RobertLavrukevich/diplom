@@ -13,6 +13,8 @@ import SearchPage from './components/pages/SearchPage';
 import AccountPage from './components/pages/AccountPage';
 import MusicSection from './components/Sections/MusicSection';
 import CinemaSection from './components/Sections/CinemaSection';
+import WorkPage from './components/pages/WorkPage';
+import MainSection from './components/Sections/MainSection';
 
 export default function App() {
   return(
@@ -20,29 +22,33 @@ export default function App() {
       <Routes>
         <Route path="/" element={<StartPage />} />
         
-        <Route path="/music" element={<MusicSection />}>
-          <Route index element={<MusicHomePage />} />
-          <Route path="reviews" element={<ReviewsPage category="music" />} />
-          <Route path="top100" element={<TopPage category="music" />} />
-          <Route path="news" element={<NewsPage category="music" />} />
-          <Route path="faq" element={<FAQPage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="search" element={<SearchPage />} />
+        <Route element={<MainSection />}>
+          <Route path="/music" element={<MusicSection />}>
+            <Route index element={<MusicHomePage />} />
+            <Route path="reviews" element={<ReviewsPage category="music" />} />
+            <Route path="top30" element={<TopPage category="music" />} />
+            <Route path="news" element={<NewsPage category="music" />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="faq" element={<FAQPage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="album/:workId" element={<WorkPage category="music" workType="album" />} />
+            <Route path="single/:workId" element={<WorkPage category="music" workType="single" />} />
+          </Route>
+          
+          <Route path="/cinema" element={<CinemaSection />}>
+            <Route index element={<CinemaHomePage />} />
+            <Route path="reviews" element={<ReviewsPage category="cinema" />} />
+            <Route path="top30" element={<TopPage category="cinema" />} />
+            <Route path="news" element={<NewsPage category="cinema" />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="faq" element={<FAQPage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="film/:workId" element={<WorkPage category="cinema" workType="film" />} />
+            <Route path="series/:workId" element={<WorkPage category="cinema" workType="series" />} /> 
+          </Route>
+          
+          <Route path="/account" element={<AccountPage />} />
         </Route>
-        
-        <Route path="/cinema" element={<CinemaSection />}>
-          <Route index element={<CinemaHomePage />} />
-          <Route path="reviews" element={<ReviewsPage category="cinema" />} />
-          <Route path="top100" element={<TopPage category="cinema" />} />
-          <Route path="news" element={<NewsPage category="cinema" />} />
-          <Route path="faq" element={<FAQPage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="search" element={<SearchPage />} />
-        </Route>
-        
-        <Route path="/account" element={<AccountPage />} />
-        
-        <Route path="/useraccount" element={<AccountPage />} />
       </Routes>
     </BrowserRouter>
   )
