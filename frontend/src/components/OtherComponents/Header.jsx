@@ -1,20 +1,19 @@
 import '/src/styles/Header.css'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-export default function Header({ category = 'music' }) {
+export default function Header({ category}) {
     const navigate = useNavigate();
     const location = useLocation();
     
-    const currentCategory = category || (location.pathname.includes('/music') ? 'music' : 'cinema');
+    const currentCategory = category;
     const basePath = `/${currentCategory}`;
 
     const handleSearch = (e) => {
         e.preventDefault();
         const searchQuery = e.target.search.value;
         if (searchQuery.trim()) {
-            navigate(`/${currentCategory}/search?q=${encodeURIComponent(searchQuery)}`);
-        }
-    };
+            navigate(`${basePath}/search?q=${encodeURIComponent(searchQuery)}`);        }
+        };
 
     const isActive = (path) => {
         return location.pathname === `${basePath}${path}` ? 'active' : '';
@@ -57,10 +56,6 @@ export default function Header({ category = 'music' }) {
                         <img src="/icons/rating-svgrepo-com.svg" className='icon' alt="top" />
                         ТОП-30
                     </Link>
-                    {/* <Link to={`${basePath}/reviews`} className={location.pathname.includes('/reviews') ? 'active' : ''}>
-                        <img src="/icons/comment-svgrepo-com.svg" className='icon' alt="reviews" />
-                        Рецензии
-                    </Link> */}
                     <Link to={`${basePath}/faq`} className={location.pathname.includes('/faq') ? 'active' : ''}>
                         <img src="/icons/question-circle-svgrepo-com.svg" className='icon' alt="faq" />
                         FAQ

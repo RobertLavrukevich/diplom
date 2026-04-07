@@ -1,15 +1,25 @@
 import { Outlet, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import Header from '../OtherComponents/Header';
 import Footer from '../OtherComponents/Footer';
 
 export default function MainLayout() {
     const location = useLocation();
+    const savedCategory = localStorage.getItem('selectedCategory') || 'music';
+    const currentCategory = location.pathname.includes('/music') ? 'music' : 
+                    location.pathname.includes('/cinema') ? 'cinema' : savedCategory;
     
-    const category = location.pathname.includes('/music') ? 'music' : 
-                    location.pathname.includes('/cinema') ? 'cinema' : null;
+    useEffect(() => {
+        if (location.pathname.includes('/music')) {
+            localStorage.setItem('selectedCategory', 'music');
+        } else if (location.pathname.includes('/cinema')) {
+            localStorage.setItem('selectedCategory', 'cinema');
+        }
+    }, [location.pathname]);
+
     return (
         <>
-            <Header category={category}/>
+            <Header category={currentCategory}/>
             <main className="main-content">
                 <Outlet /> 
             </main>

@@ -29,6 +29,7 @@ export default function WorkPage({category, workType}) {
                         genre: 'R&B',
                         averageRating: '92',
                         totalReviews: 25,
+                        type: 'Альбом',
                     });
                 }
                         else if(workType === 'single'){
@@ -41,6 +42,7 @@ export default function WorkPage({category, workType}) {
                                 genre: 'Хип-хоп',
                                 averageRating: '92',
                                 totalReviews: 25,
+                                type: 'Сингл'
                             });
                         }
                 }
@@ -55,6 +57,7 @@ export default function WorkPage({category, workType}) {
                         genre:'Экшен',
                         averageRating: '88',
                         totalReviews: 12,
+                        type: 'фильм'
                         });
                         }
                     else if(workType === 'series'){
@@ -67,6 +70,7 @@ export default function WorkPage({category, workType}) {
                         genre:'Фантастика',
                         averageRating: '88',
                         totalReviews: 12,
+                        type: 'Сериал'
                         });
                     }
                 }
@@ -136,6 +140,9 @@ export default function WorkPage({category, workType}) {
                         </p>
                         <p className="work-genre">
                             <strong>Жанр:</strong> {work.genre}
+                        </p>
+                        <p className="work-type">
+                            <strong>Тип релиза:</strong> {work.type}
                         </p>
                     </div>
 
