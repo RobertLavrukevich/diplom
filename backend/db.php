@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost';
+$host = 'db';
 $db   = 'my_review_db';
 $user = 'root';
-$pass = '';
+$pass = 'root';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
