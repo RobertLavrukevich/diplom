@@ -46,21 +46,19 @@ export default function Header({ category}) {
                 </div>     
                 {user ? (
                         <Link to="/account" className="header-user-link">
-                            <div className="header-profile">
-                                <span className="header-username">{user.username}</span>
+                            <div className="user">
                                 <img 
-                                    src={user.avatar_url || "https://via.placeholder.com/40"} 
-                                    alt="Profile" 
-                                    className="header-avatar" 
+                                    src={user.avatar_url || "/icons/avatar-svgrepo-com.svg"} 
+                                    alt="useravatar" 
+                                    className="useravatar" 
                                 />
                             </div>
                         </Link>
                     ) : (
-                        <Link to="/auth" className="login-btn">
+                        <Link to="/auth" className="login-link">
                             Войти
                         </Link>
                     )}
-                {/* <Link to="/account"><div className='user'><img className='useravatar' src="/icons/avatar-svgrepo-com.svg" alt="useravatar" /></div></Link> */}
             </div>
 
             <div className='header-down'>

@@ -1,6 +1,10 @@
 <?php
 
 require_once 'db.php';
+require_once 'vendor/autoload.php'; 
+use Firebase\JWT\JWT;
+
+$secret_key = "f8a9d7a6b5c4e3d2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -10,17 +14,26 @@ if (!empty($data['email']) && !empty($data['password'])) {
     $user = $stmt->fetch();
 
     if ($user && password_verify($data['password'], $user['password_hash'])) {
-        echo json_encode([
-            "status" => "success",
-            "user" => [
+        $payload = [
+            "iss" => "localhost",     
+            "iat" => time(),            
+            "exp" => time() + 86400,   
+            "data" => [                 
                 "id" => $user['id'],
                 "username" => $user['username'],
-                "email" => $user['email'],
-                "created_at" => $user['created_at']
+                "email" => $user['email']
             ]
+        ];
+
+        $jwt = JWT::encode($payload, $secret_key, 'HS256');
+
+        echo json_encode([
+            "status" => "success",
+            "token" => $jwt,
+            "user" => $payload['data'] 
         ]);
     } else {
         http_response_code(401);
-        echo json_encode(["status" => "error", "message" => "Invalid credentials"]);
+        echo json_encode(["status" => "error", "message" => "Неверный email или пароль"]);
     }
 }
