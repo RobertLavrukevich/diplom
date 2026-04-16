@@ -1,25 +1,18 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
+
 require_once 'db.php';
 
-$data = json_decode(file_get_contents("php://input"));
+$data = json_decode(file_get_contents("php://input"), true);
 
-if (!empty($data->username) && !empty($data->email) && !empty($data->password)) {
-    $query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
-    $stmt = $pdo->prepare($query);
-    
-    $hashedPassword = password_hash($data->password, PASSWORD_BCRYPT);
-    
+if (!empty($data['username']) && !empty($data['email']) && !empty($data['password'])) {
     try {
-        $stmt->execute([
-            ':username' => $data->username,
-            ':email' => $data->email,
-            ':password' => $hashedPassword
-        ]);
-        echo json_encode(["message" => "Пользователь создан"]);
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare("INSERT INTO Users (username, email, password_hash, role_id) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$data['username'], $data['email'], $hashedPassword, 1]); 
+        
+        echo json_encode(["status" => "success", "message" => "User registered"]);
     } catch (PDOException $e) {
         http_response_code(400);
-        echo json_encode(["error" => "Ошибка: возможно, email уже занят"]);
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
     }
 }

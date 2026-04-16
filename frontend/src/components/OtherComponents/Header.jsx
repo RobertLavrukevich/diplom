@@ -1,10 +1,15 @@
 import '/src/styles/Header.css'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext';
 
 export default function Header({ category}) {
     const navigate = useNavigate();
     const location = useLocation();
-    
+
+    const { user } = useContext(AuthContext);
+
+
     const currentCategory = category;
     const basePath = `/${currentCategory}`;
 
@@ -39,7 +44,23 @@ export default function Header({ category}) {
                         </button>
                     </form>
                 </div>     
-                <Link to="/account"><div className='user'><img className='useravatar' src="/icons/avatar-svgrepo-com.svg" alt="useravatar" /></div></Link>
+                {user ? (
+                        <Link to="/account" className="header-user-link">
+                            <div className="header-profile">
+                                <span className="header-username">{user.username}</span>
+                                <img 
+                                    src={user.avatar_url || "https://via.placeholder.com/40"} 
+                                    alt="Profile" 
+                                    className="header-avatar" 
+                                />
+                            </div>
+                        </Link>
+                    ) : (
+                        <Link to="/auth" className="login-btn">
+                            Войти
+                        </Link>
+                    )}
+                {/* <Link to="/account"><div className='user'><img className='useravatar' src="/icons/avatar-svgrepo-com.svg" alt="useravatar" /></div></Link> */}
             </div>
 
             <div className='header-down'>

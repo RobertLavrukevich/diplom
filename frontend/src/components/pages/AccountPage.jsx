@@ -1,5 +1,8 @@
 import '/src/styles/AccountPage.css'
 import { useState } from 'react'
+import { useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom'
 import CommentCard from '../OtherComponents/CommentCard';
 
 const ActivityButton = ({ active, onClick, children }) => {
@@ -83,6 +86,28 @@ const Subscriptions = () => {
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState('reviews');
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+if (!user) {
+        return (
+            <div className="account-page">
+                <h2>Пожалуйста, авторизуйтесь</h2>
+                <button onClick={() => navigate('/auth')}>Перейти ко входу</button>
+            </div>
+        );
+    }
+
+    const handleLogout = () => {
+        logout();
+        navigate('/auth');
+    };
+
+
+    const registrationDate = user.created_at 
+        ? new Date(user.created_at).toLocaleDateString('ru-RU') 
+        : 'Не указана';
+
 
   const renderActivity = () => {
     switch(activeTab) {
@@ -109,11 +134,11 @@ export default function AccountPage() {
             />
           </div>
           <div className='userinfo'>
-            <h3 className='username'>Budek</h3>
-            <h4 className='usermail'>budek@gmail.com</h4>
-            <h4 className='userdate'>Дата регистрации: 11.03.2026</h4>
+            <h3 className='username'>{user.username}</h3>
+            <h4 className='usermail'>{user.email}</h4>
+            <h4 className='userdate'>Дата регистрации:{registrationDate}</h4>
           </div>
-          <button className='exit-btn'>Выйти</button>
+          <button className='exit-btn' onClick={handleLogout}>Выйти</button>
         </div>
         
         <div className='user-activity'>

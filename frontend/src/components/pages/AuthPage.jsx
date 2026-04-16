@@ -1,60 +1,56 @@
-import { useState } from 'react';
-// import '/src/styles/AuthPage.css';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function AuthPage() {
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const endpoint = isLogin ? 'authorisation.php' : 'registration.php';
         
-        const response = await fetch(`http://localhost/api/${endpoint}`, {
+        const response = await fetch(`http://localhost:8000/${endpoint}`, {
             method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
             body: JSON.stringify(formData)
         });
-        
-        const data = await response.json();
-        if (response.ok) {
+        const result = await response.json();
+
+        if (result.status === 'success') {
             if (isLogin) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                window.location.href = '/account'; // Редирект в профиль
+                login(result.user);
+                navigate('/account');
             } else {
-                alert("Регистрация успешна! Теперь войдите.");
                 setIsLogin(true);
+                alert('Регистрация успешна! Теперь войдите.');
             }
         } else {
-            alert(data.error || data.message);
+            alert(result.message);
         }
     };
 
     return (
         <div className="auth-container">
-            <form onSubmit={handleSubmit} className="auth-form">
-                <h2>{isLogin ? 'Вход' : 'Регистрация'}</h2>
+            <h2>{isLogin ? 'Вход' : 'Регистрацияzzzz'}</h2>
+            <form onSubmit={handleSubmit}>
                 {!isLogin && (
-                    <input 
-                        type="text" 
-                        placeholder="Имя пользователя" 
-                        onChange={(e) => setFormData({...formData, username: e.target.value})} 
-                    />
+                    <input type="text" placeholder="Имя пользователя" 
+                        onChange={e => setFormData({...formData, username: e.target.value})} />
                 )}
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    onChange={(e) => setFormData({...formData, email: e.target.value})} 
-                />
-                <input 
-                    type="password" 
-                    placeholder="Пароль" 
-                    onChange={(e) => setFormData({...formData, password: e.target.value})} 
-                />
+                <input type="email" placeholder="Email" 
+                    onChange={e => setFormData({...formData, email: e.target.value})} />
+                <input type="password" placeholder="Пароль" 
+                    onChange={e => setFormData({...formData, password: e.target.value})} />
                 <button type="submit">{isLogin ? 'Войти' : 'Создать аккаунт'}</button>
-                <p onClick={() => setIsLogin(!isLogin)}>
-                    {isLogin ? 'Нет аккаунта? Зарегистрируйтесь' : 'Уже есть аккаунт? Войдите'}
-                </p>
             </form>
+            <button onClick={() => setIsLogin(!isLogin)}>
+                {isLogin ? 'Нет аккаунта? Регистрация' : 'Уже есть аккаунт? Вход'}
+            </button>
         </div>
     );
 }

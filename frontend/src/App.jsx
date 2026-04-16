@@ -15,6 +15,7 @@ import MusicSection from './components/Sections/MusicSection';
 import CinemaSection from './components/Sections/CinemaSection';
 import WorkPage from './components/pages/WorkPage';
 import MainSection from './components/Sections/MainSection';
+import AuthPage from './components/pages/AuthPage';
 
 export default function App() {
   return(
@@ -48,6 +49,7 @@ export default function App() {
           </Route>
           
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/auth" element={<AuthPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
