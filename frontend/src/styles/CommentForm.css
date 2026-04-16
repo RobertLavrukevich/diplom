@@ -107,7 +107,6 @@
 .rating-slider {
     flex: 1;
     height: 6px;
-    -webkit-appearance: none;
     background: linear-gradient(90deg, #c6c7d1 0%, #7f87c0 50%, #0611dc 100%);
     border-radius: 3px;
     outline: none;
@@ -167,7 +166,6 @@
 }
 
 .commenttitle input {
-    width: 100%;
     padding: 15px;
     border: 2px solid #e0e0e0;
     border-radius: 12px;
@@ -189,7 +187,6 @@
 }
 
 .commentcontent textarea {
-    width: 100%;
     padding: 15px;
     border: 2px solid #e0e0e0;
     border-radius: 12px;
