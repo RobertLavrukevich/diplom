@@ -1,25 +1,51 @@
-import NewsCard from "../OtherComponents/NewsCard"
-import '/src/styles/NewsPage.css'
+import { useState, useEffect } from "react";
+import NewsCard from "../OtherComponents/NewsCard";
+import '/src/styles/NewsPage.css';
 
-export default function NewsPage({category}){
-    return(
-        <>
-        <h1>Новости - {category === 'music' ? 'Музыка' : 'Кино'}</h1>
-        <div className="mainblock">
-        {category === 'music'?
-        <>
-            <NewsCard title={"Новый альбом Radiohead вышел сегодня"} date={"11 марта 2026"} imageUrl={"https://img.freepik.com/premium-vector/breaking-news-tv-channel-news-screensaver_34230-481.jpg"} content={"Группа Radiohead неожиданно выпустила новый альбом 'Moon Shaped Pool 2'. В альбом вошло 12 треков, включая ранее не издававшиеся демо-записи 90-х годов. Критики уже называют релиз одним из главных событий года."}></NewsCard>
-            <NewsCard title={"Рэп, поддерживающий в самые темные моменты: про альбом J. Cole 'The Fall-Off'"} date={"27 февраля 2026"} imageUrl={"https://the-flow.ru/uploads/images/resize/830x0/adaptiveResize/14/70/80/90/96/6b5e52e40cd7.jpg"} content={"Его рэп звучит в наушниках почти половину жизни. Я был студентом четвертого курса, когда впервые услышал подающего надежды эмси, заинтересовавшего самого Jay-Z. Помню, что так часто гонял на репите песню “Lights Please” с микстейпа “The Warm Up”, что ее заучили мои соседи по общаге. Это была крайне необычная для жанра вещь: монолог парня, которого никто не понимает — даже его девушка, которой он пытается рассказать что-то сокровенное, добиться близости на духовном, а не телесном уровне, — но подруга постоянно просит вырубить свет и переместиться в постель. Помню, как вычитал на реддите фанатскую теорию, что девушка в этой песне — это и есть рэп-игра, которую Коул пытается образумить, поговорить с ней на серьезке, но не находит отклика (Коул вроде потом говорил, что не вкладывал такого смысла)."}></NewsCard>
-            <NewsCard title={"Yeat показал трейлер грядущего альбома “ADL”"} date={"12 марта 2026"} imageUrl={"https://the-flow.ru/uploads/images/resize/830x0/adaptiveResize/17/63/57/13/78/0b61a2940cd7.jpg"} content={"Yeat выпустил видео-тизер двойного альбома “ADL”. Внутри: артхаусные кадры, напоминающие старую рекламу или абсурдные комедии. Выглядит это так: рэпер пробирается через джунгли, карабкается по горе и купается в озере с медведями. В конце появляется дата релиза: 27 марта. Последний большой альбом Yeat “Lyfestyle” вышел в 2024 году. Новый альбом должен стать двойным: рекламные баннеры намекают, что “ADL” это одновременно и 'A Dangerous Lyfe', и 'A Dangerous Love'."}></NewsCard>
-        </>
-        :
-        <>
-        <NewsCard title={"Критики позитивно восприняли «Проект «Конец света»» с Райаном Гослингом"} date={"2 марта 2026"} imageUrl={"https://www.film.ru/sites/default/files/styles/thumb_1024x450/public/filefield_paths/443.jpg"} content={"За основу фильма взят роман писателя Энди Уира («Марсианин»). Сюжет рассказывает о школьном учителе, которому нужно предотвратить апокалипсис. Режиссёрами выступили Фил Лорд и Кристофер Миллер («Мачо и ботан»). Во втором плане сыграли Сандра Хюллер («Анатомия падения») и Кен Люн («Индустрия»). Бюджет «Проекта» составил 200 млн долларов."}></NewsCard>
-        <NewsCard title={"«Формулу-1» с Брэдом Питтом наградили за звук"} date={"4 марта 2026"} imageUrl={"https://www.film.ru/sites/default/files/styles/thumb_1024x450/public/filefield_paths/f1_0.jpg"} content={"Гоночный блокбастер «F1» с Брэдом Питтом получил главный приз от сообщества специалистов по звуку в Голливуде (Cinema Audio Society).Среди лауреатов также оказались «Кей-поп-охотницы на демонов», сериалы «Питт», «Киностудия» и «Переходный возраст». Почётная награда досталась режиссёру Гильермо дель Торо.Ранее «F1» вручали аналогичные призы за звуковое оформление на премиях BAFTA и «Выбор критиков». Картина также номинирована на «Оскар» в звуковой категории. Фильм Джозефа Косински выходил летом 2025 года и собрал в мире 633 млн долларов."}></NewsCard>
-        <NewsCard title={"«Крик 7» получил дату онлайн-релиза"} date={"8 марта 2026"} imageUrl={"https://www.film.ru/sites/default/files/styles/thumb_1024x450/public/filefield_paths/sc7r.jpg"} content={"Седьмая часть франшизы «Крик» появится в Сети 31 марта. Об этом сообщает портал DVD Release Dates.На эту же дату запланирована цифровая премьера «Грозового перевала» с Марго Робби. «Крик 7» дебютировал в зарубежном прокате в конце февраля. Сюжет рассказывает о Сидни Прескотт и её дочери, противостоящих маньяку Призрачное лицо."}></NewsCard>
-        </>
-        }
+export default function NewsPage({ category }) {
+    const [newsList, setNewsList] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(`http://localhost:8000/get_news.php?category=${category}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.error) {
+                    setNewsList(data);
+                }
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Ошибка загрузки новостей:", err);
+                setLoading(false);
+            });
+    }, [category]);
+
+    if (loading) return <div className="loading">Загрузка новостей...</div>;
+
+    return (
+        <div className="news-page-container">
+            <h1>Новости - {category === 'music' ? 'Музыка' : 'Кино'}</h1>
+            <div className="mainblock">
+                {newsList.length > 0 ? (
+                    newsList.map((news) => (
+                        <NewsCard 
+                            key={news.id}
+                            title={news.title}
+                            date={new Date(news.created_at).toLocaleDateString('ru-RU', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric'
+                            })}
+                            imageUrl={news.image_url || "/icons/news-placeholder.svg"} 
+                            content={news.content}
+                        />
+                    ))
+                ) : (
+                    <p>Новостей в этой категории пока нет.</p>
+                )}
+            </div>
         </div>
-        </>
-    )
+    );
 }

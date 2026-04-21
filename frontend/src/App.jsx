@@ -29,11 +29,11 @@ export default function App() {
             <Route path="reviews" element={<ReviewsPage category="music" />} />
             <Route path="top30" element={<TopPage category="music" />} />
             <Route path="news" element={<NewsPage category="music" />} />
-            <Route path="search" element={<SearchPage />} />
             <Route path="faq" element={<FAQPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="album/:workId" element={<WorkPage category="music" workType="album" />} />
             <Route path="single/:workId" element={<WorkPage category="music" workType="single" />} />
+            <Route path="search" element={<SearchPage category="music" />} />
           </Route>
           
           <Route path="/cinema" element={<CinemaSection />}>
@@ -41,11 +41,11 @@ export default function App() {
             <Route path="reviews" element={<ReviewsPage category="cinema" />} />
             <Route path="top30" element={<TopPage category="cinema" />} />
             <Route path="news" element={<NewsPage category="cinema" />} />
-            <Route path="search" element={<SearchPage />} />
             <Route path="faq" element={<FAQPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="film/:workId" element={<WorkPage category="cinema" workType="film" />} />
             <Route path="series/:workId" element={<WorkPage category="cinema" workType="series" />} /> 
+            <Route path="search" element={<SearchPage category="cinema" />} />
           </Route>
           
           <Route path="/account" element={<AccountPage />} />
