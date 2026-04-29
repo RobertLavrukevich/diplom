@@ -8,7 +8,7 @@ export default function CardWork({ id, imageUrl, artistName, workName, rating, c
         const types = {
             'Альбом': 'album',
             'Сингл': 'single',
-            'фильм': 'film',
+            'Фильм': 'film',
             'Сериал': 'series'
         };
         return types[typeName] || typeName.toLowerCase();

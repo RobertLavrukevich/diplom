@@ -10,7 +10,7 @@ export default function MusicHomePage(){
 
         <h2 className="firsth2">Активные обсуждения <img className="active-icon" src="https://www.svgrepo.com/show/506715/fire.svg" alt="fire" /></h2>
             <div className="actual-block">
-                <CardWork imageUrl={"https://avatars.yandex.net/get-music-content/15682289/b32b5025.a.40985691-1/1000x1000"} artistName={"FRIENDLY THUG 52 NGG"} workName={"COW"} rating={"79"}></CardWork>
+                <CardWork imageUrl={"https://avatars.yandex.net/get-music-content/15682289/b32b5025.a.40985691-1/1000x1000"} artistName={"FRIENDLY THUG 52 NGG"} workName={"COW"} rating={"100"}></CardWork>
                 <CardWork imageUrl={"https://avatars.yandex.net/get-music-content/10139807/520d664e.a.28719429-1/1000x1000"} artistName={"Miyagi, Эндшпиль"} workName={"Голгофа"} rating={"88"}></CardWork>
                 <CardWork imageUrl={"https://avatars.yandex.net/get-music-content/7852894/aab9e55a.a.25511786-1/1000x1000"} artistName={"Heronwater"} workName={"Garden"} rating={"45"}></CardWork>
                 <CardWork imageUrl={"https://avatars.yandex.net/get-music-content/4399834/0415f8b8.a.17439837-1/1000x1000"} artistName={"ЛСП"} workName={"Tragic City"} rating={"66"}></CardWork>

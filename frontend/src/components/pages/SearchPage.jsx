@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import '/src/styles/SearchPage.css'
 import CardWork from '../OtherComponents/CardWork';
 
 export default function SearchPage({ category }) {
@@ -34,14 +35,13 @@ export default function SearchPage({ category }) {
     }, [query, category]);
 
     return (
-        <div className="search-results-container" style={{ padding: '20px' }}>
-            <h2 style={{color: "white"}}>Поиск: {category === 'music' ? 'Музыка' : 'Кино'}</h2>
-            <p style={{color: "gray"}}>Результаты по запросу: "{query}"</p>
+        <div className="search-results-container">
+            <p className='result-text'>Результаты по поиску: "{query}"</p>
 
             {loading ? (
                 <div className="loading">Загрузка...</div>
             ) : (
-                <div className="results-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '20px' }}>
+                <div className="results-grid">
                     {results.length > 0 ? (
                         results.map((work) => (
                             <CardWork 
@@ -56,7 +56,7 @@ export default function SearchPage({ category }) {
                             />
                         ))
                     ) : (
-                        <p style={{color: "white"}}>Ничего не найдено</p>
+                        <p className='no-search'>Ничего не найдено</p>
                     )}
                 </div>
             )}

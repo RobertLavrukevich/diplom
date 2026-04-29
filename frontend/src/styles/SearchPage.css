@@ -1,0 +1,38 @@
+.results-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 30px;
+    margin-left: 4%;
+    margin-right: 4%;
+    justify-content: center;
+}
+
+.results-grid > * {
+    flex: 0 0 calc(22% - 18px);
+    min-width: 0;
+}
+
+@media (max-width: 1200px) {
+    .results-grid > * {
+        flex: 0 0 calc(33.333% - 16px); 
+    }
+}
+
+@media (max-width: 900px) {
+    .results-grid > * {
+        flex: 0 0 calc(50% - 12px);
+    }
+}
+
+@media (max-width: 600px) {
+    .results-grid > * {
+        flex: 0 0 100%;
+    }
+}
+
+.result-text{
+    color: grey;
+    margin-left: 2%;
+    margin-top: 2%;
+}
