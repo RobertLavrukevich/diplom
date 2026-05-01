@@ -16,6 +16,7 @@ import CinemaSection from './components/Sections/CinemaSection';
 import WorkPage from './components/pages/WorkPage';
 import MainSection from './components/Sections/MainSection';
 import AuthPage from './components/pages/AuthPage';
+import UserPage from './components/pages/UserPage';
 
 export default function App() {
   return(
@@ -50,6 +51,7 @@ export default function App() {
           
           <Route path="/account" element={<AccountPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/user/:userId" element={<UserPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -11,6 +11,8 @@ export default function WorkPage({ category, workType }) {
     const [work, setWork] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [visibleReviewsCount, setVisibleReviewsCount] = useState(1);
 
     const fetchReviews = async () => {
         try {
@@ -18,6 +20,10 @@ export default function WorkPage({ category, workType }) {
             const data = await response.json();
             setReviews(data);
         } catch (err) { console.error(err); }
+    };
+
+    const showMoreReviews = () => {
+        setVisibleReviewsCount(prevCount => prevCount + 1);
     };
 
     const fetchWorkData = async () => {
@@ -46,6 +52,35 @@ export default function WorkPage({ category, workType }) {
         fetchWorkData();
         fetchReviews(); 
     }, [workId]);
+
+    useEffect(() => {
+        fetchWorkData();
+        fetchReviews();
+        if (user) {
+            fetch(`http://localhost:8000/check_favorite.php?user_id=${user.id}&work_id=${workId}`)
+                .then(res => res.json())
+                .then(data => setIsFavorite(data.isFavorite));
+        }
+    }, [workId, user]);
+
+    const handleToggleFavorite = async () => {
+        if (!user) {
+            alert("Пожалуйста, войдите в аккаунт");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8000/toggle_favorite.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.id, work_id: workId })
+            });
+            const data = await response.json();
+            setIsFavorite(data.status === 'added');
+        } catch (err) { console.error(err); }
+    };
+
+
 
     if (loading) return <div className="loading">Загрузка...</div>;
     if (!work) return <div className="loading">Произведение не найдено</div>;
@@ -83,6 +118,19 @@ export default function WorkPage({ category, workType }) {
                                 📝 {work.totalReviews} рецензий
                             </div>
                         </div>
+                    
+                        {user && ( <div className="favorite-action-container">
+                            <p className="favorite-text">
+                                {isFavorite ? 'Убрать из любимого' : 'Добавить в любимое'}
+                            </p>
+                            <button 
+                                className={`favorite-btn ${isFavorite ? 'active' : ''}`} 
+                                onClick={handleToggleFavorite}
+                            >
+                                {isFavorite ? '❤️' : '🤍'}
+                            </button>
+                        </div>
+                        )}
                         <p className="work-description">{work.description}</p>
                     </div>
                 </div>
@@ -100,18 +148,29 @@ export default function WorkPage({ category, workType }) {
                     <h2 className="reviews-title">Рецензии ({reviews.length})</h2>
                     <div className="reviews-list">
                         {reviews.length > 0 ? (
-                            reviews.map(review => (
-                                <CommentCard
-                                    key={review.id}
-                                    imageUrl={review.avatar_url || '/icons/default-avatar.svg'}
-                                    userName={review.username}
-                                    userRating={review.rating}
-                                    commentTitle={review.title}
-                                    commentContent={review.content}
-                                    nameWork={work.title}
-                                    nameArtist={work.artist}
-                                />
-                            ))
+                            <>
+                                {reviews.slice(0, visibleReviewsCount).map(review => (
+                                    <CommentCard
+                                        key={review.id}
+                                        userId={review.user_id}
+                                        currentUserId={user?.id}
+                                        imageUrl={review.avatar_url || '/icons/default-avatar.svg'}
+                                        userName={review.username}
+                                        userRating={review.rating}
+                                        commentTitle={review.title}
+                                        commentContent={review.content}
+                                        nameWork={work.title}
+                                        nameArtist={work.artist}
+                                    />
+                                ))}
+                                {visibleReviewsCount < reviews.length && (
+                                    <div className="show-more-container">
+                                        <button className="show-more-btn" onClick={showMoreReviews}>
+                                            Показать ещё
+                                        </button>
+                                    </div>
+                                )}
+                            </>
                         ) : (
                             <p className="no-reviews">Будьте первым, кто оставит рецензию!</p>
                         )}

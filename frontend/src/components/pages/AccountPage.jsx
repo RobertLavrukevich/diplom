@@ -1,5 +1,5 @@
 import '/src/styles/AccountPage.css'
-import { useState } from 'react'
+import { useState, useEffect, } from 'react'
 import { useContext } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom'
@@ -11,46 +11,86 @@ const ActivityButton = ({ active, onClick, children }) => {
   );
 };
 
-const MyReviews = () => {
-  const reviews = [
-    { id: 1, title: 'Название рецензии 1', type: 'music', date: '15.03.2026', rating: 8 },
-    { id: 2, title: 'Название рецензии 2', type: 'cinema', date: '10.03.2026', rating: 9 },
-    { id: 3, title: 'Название рецензии 3', type: 'music', date: '05.03.2026', rating: 7 },
-  ];
+
+const MyReviews = ({ reviews }) => {
+  if (reviews.length === 0) {
+    return <p className="no-data">Вы еще не написали ни одной рецензии.</p>;
+  }
 
   return (
     <>
-        <CommentCard imageUrl={"https://storage.yandexcloud.net/static-production/rztbackend/users/94321/8f98fc79-c04a-4541-b754-01c0f8f12502.png"} userName={"Vlad"} userRating={"45"} commentTitle={"Оол выащыа ыал ылвдпжщзц плдчв ывщшзп"} commentContent={"H ksf sklsdkvk svklskl vjskdjv ksldjvklsd jvklsjd ivjsidovj isod fjvv gfgf  gdfgdfgd fdgfdg fdgdsg dfdsf gdsdsfdgd "} nameWork={"Леса и тучи"} nameArtist={"carti"}></CommentCard>
-        <CommentCard imageUrl={"https://storage.yandexcloud.net/static-production/rztbackend/users/94321/8f98fc79-c04a-4541-b754-01c0f8f12502.png"} userName={"EgoPWS"} userRating={"67"} commentTitle={"Рлыа ща лщыащлц ощаыаф пфпк"} commentContent={"Ikos ksjgklsj lsdj kl;gsdl sl;dkgopdfjiogsf dkgdfjgjkjkdfh jfkgdfjkgjdlkfh gjkdfghjkds hgd"} nameWork={"Que que"} nameArtist={"Travis Scott"}></CommentCard>
+      {reviews.map((review) => (
+        <CommentCard 
+          key={review.id}
+          imageUrl={review.avatar_url || 'https://zefirka.club/wallpapers/uploads/posts/2023-03/1678141011_zefirka-club-p-krutie-avatarki-na-stendoff-29.jpg'} 
+          userName={review.username} 
+          userRating={review.rating} 
+          commentTitle={review.review_title} 
+          commentContent={review.content} 
+          nameWork={review.work_title} 
+          nameArtist={review.singers || review.actors}
+        />
+      ))}
     </>
   );
 };
 
-const LikedItems = () => {
-  const liked = [
-    { id: 1, imgUrl:'https://img.apmcdn.org/2db46667ee27633851e4247767963641bb8e84fd/portrait/1551a6-20160823-frank-ocean-blond.jpg', title: 'Blonde', type: 'Альбом', artist: 'Franc Ocean', year: "12.03.2026" },
-    { id: 2, imgUrl:'https://avatars.mds.yandex.net/get-ott/236744/2a00000198530fb3e592ad08b06f9b81d22b/600x900', title: '1 + 1', type: 'Фильм', actors: 'Франсуа Клюзе, Омар Си, Анн Ле Ни, Одри Флёро, Жозефин де Мо', year: "14.03.2026" },
-    { id: 3, imgUrl:'https://upload.wikimedia.org/wikipedia/en/b/b4/Travis_Scott_-_Highest_in_the_Room.png', title: 'Highest in the room', type: 'Сингл', artist: 'Travis Scott', year: "14.03.2026" },
-    { id: 4, imgUrl:'https://i.scdn.co/image/ab67616d0000b273ebc8cfac8b586bc475b04918', title: 'Summertime sadness', type: 'Сингл', artist: 'Lana Del Ray', year: "16.03.2026" },
-  ];
+
+
+
+const LikedItems = ({ favorites }) => {
+  const navigate = useNavigate();
+
+  const getTypeSlug = (typeName) => {
+    const types = {
+      'Альбом': 'album',
+      'Сингл': 'single',
+      'Фильм': 'film',
+      'Сериал': 'series'
+    };
+    return types[typeName] || (typeName ? typeName.toLowerCase() : '');
+  };
+
+    const handleNavigate = (item) => {
+    const typeSlug = getTypeSlug(item.typeName);
+    const category = item.category; 
+    
+    if (category && typeSlug && item.id) {
+        navigate(`/${category}/${typeSlug}/${item.id}`);
+    } else {
+        console.error("Недостаточно данных для навигации:", item);
+    }
+  };
+
+  if (!favorites || favorites.length === 0) {
+    return <p className="no-data">У вас пока нет любимых произведений.</p>;
+  }
+
+
 
   return (
     <div className="activity-grid">
-      {liked.map(item => (
-        <div key={item.id} className="activity-card">
-          <div className="card-type">{item.type}</div>
+      {favorites.map(item => (
+        <div 
+            key={item.id} 
+            className="activity-card" 
+            onClick={() => handleNavigate(item)}
+            style={{ cursor: 'pointer' }}
+        >
+          <div className="card-type">{item.typeName}</div>
           <div className='card-info'>
-            <div className='img-block'><img className='card-img' src={item.imgUrl}/></div>
+            <div className='img-block'>
+                <img className='card-img' src={item.poster_url} alt={item.title}/>
+            </div>
             <div className='card-text'>
                 <h4 className="card-title">{item.title}</h4>
                 <div className="card-details">
-                    {item.artist && <p>{item.artist}</p>}
-                    {item.actors && <p>{item.actors}</p>}
+                    <p>{item.singers || item.actors}</p>
                 </div>
             </div>
           </div>
           <div className="card-footer">
-            <span className="card-date">{item.year}</span>
+            <span className="card-date">{new Date(item.release_date).getFullYear()}</span>
             <span className="card-rating">❤️</span>
           </div>
         </div>
@@ -87,34 +127,53 @@ const Subscriptions = () => {
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState('reviews');
   const { user, logout } = useContext(AuthContext);
+  const [userReviews, setUserReviews] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
 
-if (!user) {
-        return (
-            <div className="account-page">
-                <h2>Пожалуйста, авторизуйтесь</h2>
-                <button onClick={() => navigate('/auth')}>Перейти ко входу</button>
-            </div>
-        );
+useEffect(() => {
+    if (user && user.id) {
+      fetch(`http://localhost:8000/get_user_reviews.php?user_id=${user.id}`)
+        .then(res => res.json())
+        .then(data => !data.error && setUserReviews(data));
+      
+      fetch(`http://localhost:8000/get_user_favorites.php?user_id=${user.id}`)
+        .then(res => res.json())
+        .then(data => !data.error && setFavorites(data));
     }
+  }, [user]);
 
-    const handleLogout = () => {
-        logout();
-        navigate('/auth');
-    };
+  if (!user) {
+    return (
+      <div className="account-page">
+        <h2>Пожалуйста, авторизуйтесь</h2>
+        <button onClick={() => navigate('/auth')}>Перейти ко входу</button>
+      </div>
+    );
+  }
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth');
+  };
+
+  const registrationDate = user.created_at 
+    ? new Date(user.created_at).toLocaleDateString('ru-RU') 
+    : 'Не указана';
 
 
-    const registrationDate = user.created_at 
-        ? new Date(user.created_at).toLocaleDateString('ru-RU') 
-        : 'Не указана';
+  
 
 
-  const renderActivity = () => {
+
+
+
+ const renderActivity = () => {
     switch(activeTab) {
       case 'reviews':
-        return <MyReviews />;
+        return <MyReviews reviews={userReviews} />;
       case 'liked':
-        return <LikedItems />;
+        return <LikedItems favorites={favorites} />;
       case 'subscriptions':
         return <Subscriptions />;
       default:
@@ -129,14 +188,14 @@ if (!user) {
           <div className='user-avatar'>
             <img 
               className='avaimg' 
-              src="https://storage.yandexcloud.net/static-production/rztbackend/users/94321/8f98fc79-c04a-4541-b754-01c0f8f12502.png" 
+              src={user.avatar_url || "https://storage.yandexcloud.net/.../default.png"} 
               alt="userava" 
             />
           </div>
           <div className='userinfo'>
             <h3 className='username'>{user.username}</h3>
-            <h4 className='usermail'>{user.email}</h4>
-            <h4 className='userdate'>Дата регистрации:{registrationDate}</h4>
+            <h4 className='usermail'>Почта: {user.email}</h4>
+            <h4 className='userdate'>Дата регистрации: {registrationDate}</h4>
           </div>
           <button className='exit-btn' onClick={handleLogout}>Выйти</button>
         </div>
@@ -146,21 +205,15 @@ if (!user) {
             <ActivityButton 
               active={activeTab === 'subscriptions'} 
               onClick={() => setActiveTab('subscriptions')}
-            >
-              Подписки
-            </ActivityButton>
+            >Подписки</ActivityButton>
             <ActivityButton 
               active={activeTab === 'reviews'} 
               onClick={() => setActiveTab('reviews')}
-            >
-              Мои рецензии
-            </ActivityButton>
+            >Мои рецензии</ActivityButton>
             <ActivityButton 
               active={activeTab === 'liked'} 
               onClick={() => setActiveTab('liked')}
-            >
-              Понравилось
-            </ActivityButton>
+            >Понравилось</ActivityButton>
           </div>
           
           <div className='activity-result'>
