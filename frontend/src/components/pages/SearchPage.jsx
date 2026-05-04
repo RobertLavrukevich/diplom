@@ -47,6 +47,7 @@ export default function SearchPage({ category }) {
                             <CardWork 
                                 key={work.id}
                                 id={work.id}
+                                slug={work.slug}
                                 imageUrl={work.poster_url}
                                 workName={work.title}
                                 artistName={category === 'music' ? work.singers : work.actors}

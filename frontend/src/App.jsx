@@ -32,8 +32,8 @@ export default function App() {
             <Route path="news" element={<NewsPage category="music" />} />
             <Route path="faq" element={<FAQPage />} />
             <Route path="about" element={<AboutPage />} />
-            <Route path="album/:workId" element={<WorkPage category="music" workType="album" />} />
-            <Route path="single/:workId" element={<WorkPage category="music" workType="single" />} />
+            <Route path="album/:workSlug" element={<WorkPage category="music" workType="album" />} />
+            <Route path="single/:workSlug" element={<WorkPage category="music" workType="single" />} />
             <Route path="search" element={<SearchPage category="music" />} />
           </Route>
           
@@ -44,14 +44,14 @@ export default function App() {
             <Route path="news" element={<NewsPage category="cinema" />} />
             <Route path="faq" element={<FAQPage />} />
             <Route path="about" element={<AboutPage />} />
-            <Route path="film/:workId" element={<WorkPage category="cinema" workType="film" />} />
-            <Route path="series/:workId" element={<WorkPage category="cinema" workType="series" />} /> 
+            <Route path="film/:workSlug" element={<WorkPage category="cinema" workType="film" />} />
+            <Route path="series/:workSlug" element={<WorkPage category="cinema" workType="series" />} /> 
             <Route path="search" element={<SearchPage category="cinema" />} />
           </Route>
           
           <Route path="/account" element={<AccountPage />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/user/:userId" element={<UserPage />} />
+          <Route path="/user/:username" element={<UserPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

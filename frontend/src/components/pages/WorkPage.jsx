@@ -6,7 +6,7 @@ import CommentForm from '../OtherComponents/CommentForm';
 import CommentCard from '../OtherComponents/CommentCard';
 
 export default function WorkPage({ category, workType }) {
-    const { workId } = useParams();
+    const { workSlug } = useParams();
     const { user } = useContext(AuthContext);
     const [work, setWork] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -14,24 +14,18 @@ export default function WorkPage({ category, workType }) {
     const [isFavorite, setIsFavorite] = useState(false);
     const [visibleReviewsCount, setVisibleReviewsCount] = useState(1);
 
-    const fetchReviews = async () => {
-        try {
-            const response = await fetch(`http://localhost:8000/get_reviews.php?work_id=${workId}`);
-            const data = await response.json();
-            setReviews(data);
-        } catch (err) { console.error(err); }
-    };
-
     const showMoreReviews = () => {
         setVisibleReviewsCount(prevCount => prevCount + 1);
     };
 
+    useEffect(() => {
     const fetchWorkData = async () => {
+        setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/get_work.php?id=${workId}`);
+            const response = await fetch(`http://localhost:8000/get_work.php?slug=${workSlug}`);
             const data = await response.json();
             if (!data.error) {
-                setWork({
+                const fetchedWork = {
                     id: data.id,
                     title: data.title,
                     description: data.description,
@@ -41,39 +35,54 @@ export default function WorkPage({ category, workType }) {
                     genre: data.genre,
                     averageRating: data.averageRating,
                     totalReviews: data.totalReviews,
-                    type: data.typeName
-                });
+                    typeName: data.typeName,
+                    slug: data.slug
+                };
+                setWork(fetchedWork);
             }
-        } catch (error) { console.error(error); }
-        finally { setLoading(false); }
+        } catch (error) {
+            console.error("Ошибка загрузки:", error);
+        } finally {
+            setLoading(false);
+        }
+        };
+
+        fetchWorkData();
+    }, [workSlug]);
+
+    useEffect(() => {
+        if (work?.id) {
+            fetchReviews(work.id);
+        }
+    }, [work?.id, user]);
+
+
+    const fetchReviews = async (id) => {
+        const targetId = id || work?.id;
+        if (!targetId) return;
+        try {
+            const userIdParam = user ? `&user_id=${user.id}` : '';
+            const response = await fetch(`http://localhost:8000/get_reviews.php?work_id=${targetId}${userIdParam}`);     
+            const data = await response.json();
+            setReviews(data);
+        } catch (err) { console.error(err); }
     };
 
     useEffect(() => {
-        fetchWorkData();
-        fetchReviews(); 
-    }, [workId]);
-
-    useEffect(() => {
-        fetchWorkData();
-        fetchReviews();
-        if (user) {
-            fetch(`http://localhost:8000/check_favorite.php?user_id=${user.id}&work_id=${workId}`)
+        if (work?.id && user) {
+            fetch(`http://localhost:8000/check_favorite.php?user_id=${user.id}&work_id=${work.id}`)
                 .then(res => res.json())
                 .then(data => setIsFavorite(data.isFavorite));
         }
-    }, [workId, user]);
+    }, [work?.id, user]);
 
     const handleToggleFavorite = async () => {
-        if (!user) {
-            alert("Пожалуйста, войдите в аккаунт");
-            return;
-        }
-
+        if (!user) return alert("Пожалуйста, войдите в аккаунт");
         try {
             const response = await fetch(`http://localhost:8000/toggle_favorite.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: user.id, work_id: workId })
+                body: JSON.stringify({ user_id: user.id, work_id: work.id })
             });
             const data = await response.json();
             setIsFavorite(data.status === 'added');
@@ -161,6 +170,10 @@ export default function WorkPage({ category, workType }) {
                                         commentContent={review.content}
                                         nameWork={work.title}
                                         nameArtist={work.artist}
+                                        reviewId={review.id}
+                                        showLikeSection={true} 
+                                        initialLikesCount={parseInt(review.likes_count) || 0}
+                                        initialIsLiked={!!review.is_liked}
                                     />
                                 ))}
                                 {visibleReviewsCount < reviews.length && (

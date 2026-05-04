@@ -1,16 +1,16 @@
 <?php
 require_once 'db.php';
 
-$user_id = $_GET['user_id'] ?? null;
+$username = $_GET['username'] ?? null;
 
-if (!$user_id) {
-    echo json_encode(['error' => 'Не указан user_id']);
+if (!$username) {
+    echo json_encode(['error' => 'Не указан username']);
     exit;
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT id, username, email, avatar_url, created_at FROM Users WHERE id = ?");
-    $stmt->execute([$user_id]);
+    $stmt = $pdo->prepare("SELECT id, username, email, avatar_url, created_at FROM Users WHERE username = ?");
+    $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {

@@ -15,6 +15,7 @@ try {
 
     $sql = "SELECT 
                 w.id, 
+                w.slug,
                 w.title, 
                 w.poster_url, 
                 w.average_rating, 

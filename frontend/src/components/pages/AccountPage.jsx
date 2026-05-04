@@ -36,8 +36,6 @@ const MyReviews = ({ reviews }) => {
 };
 
 
-
-
 const LikedItems = ({ favorites }) => {
   const navigate = useNavigate();
 
@@ -55,8 +53,8 @@ const LikedItems = ({ favorites }) => {
     const typeSlug = getTypeSlug(item.typeName);
     const category = item.category; 
     
-    if (category && typeSlug && item.id) {
-        navigate(`/${category}/${typeSlug}/${item.id}`);
+    if (category && typeSlug && item.slug) {
+        navigate(`/${category}/${typeSlug}/${item.slug}`);
     } else {
         console.error("Недостаточно данных для навигации:", item);
     }
@@ -99,25 +97,37 @@ const LikedItems = ({ favorites }) => {
   );
 };
 
-const Subscriptions = () => {
-  const subscriptions = [
-    { id: 1, name: 'SimonVB', avatar: 'https://storage.yandexcloud.net/static-production/rztbackend/users/56959/36c7618a-e276-4068-9a53-faf4aab3009e.jpg' },
-    { id: 2, name: 'ИронияKID', avatar: 'https://storage.yandexcloud.net/static-production/rztbackend/users/107454/6e9e49ca-1bf9-49bd-a33e-f1d85c0463ce.jpg'},
-    { id: 3, name: 'modifiedaa', avatar: 'https://storage.yandexcloud.net/static-production/rztbackend/users/91847/afae5321-d9bf-437f-866f-7d56c3a39b3d.jpeg'},
-  ];
+const Subscriptions = ({ userId }) => {
+  const [subs, setSubs] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userId) {
+      fetch(`http://localhost:8000/get_subscriptions.php?user_id=${userId}`)
+        .then(res => res.json())
+        .then(data => !data.error && setSubs(data));
+    }
+  }, [userId]);
+
+  if (subs.length === 0) return <p className="no-data">Подписок пока нет.</p>;
 
   return (
     <div className="subscriptions-grid">
-      {subscriptions.map(sub => (
-        <div key={sub.id} className="subscription-card">
+      {subs.map(sub => (
+        <div 
+          key={sub.id} 
+          className="subscription-card" 
+          onClick={() => navigate(`/user/${sub.username}`)}
+          style={{ cursor: 'pointer' }}
+        >
           <div className="sub-avatar">
-            {sub.avatar ? (
-              <img src={sub.avatar} alt={sub.name} />
+            {sub.avatar_url ? (
+              <img src={sub.avatar_url} alt={sub.username} />
             ) : (
-              <div className="avatar-placeholder">{sub.name[0]}</div>
+              <div className="avatar-placeholder">{sub.username[0]}</div>
             )}
           </div>
-          <span className="sub-name">{sub.name}</span>
+          <span className="sub-name">{sub.username}</span>
         </div>
       ))}
     </div>
@@ -162,12 +172,6 @@ useEffect(() => {
     : 'Не указана';
 
 
-  
-
-
-
-
-
  const renderActivity = () => {
     switch(activeTab) {
       case 'reviews':
@@ -175,7 +179,7 @@ useEffect(() => {
       case 'liked':
         return <LikedItems favorites={favorites} />;
       case 'subscriptions':
-        return <Subscriptions />;
+        return <Subscriptions userId={user.id} />;
       default:
         return null;
     }

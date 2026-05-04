@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import '/src/styles/CardWork.css';
 
-export default function CardWork({ id, imageUrl, artistName, workName, rating, category, workTypeName }) {
+export default function CardWork({ id, slug, imageUrl, artistName, workName, rating, category, workTypeName }) {
     const navigate = useNavigate();
 
     const getTypeSlug = (typeName) => {
@@ -16,7 +16,7 @@ export default function CardWork({ id, imageUrl, artistName, workName, rating, c
 
     const handleNavigate = () => {
         const typeSlug = getTypeSlug(workTypeName);
-        navigate(`/${category}/${typeSlug}/${id}`);
+        navigate(`/${category}/${typeSlug}/${slug}`);
     };
 
     return (
