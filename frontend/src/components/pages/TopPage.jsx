@@ -1,116 +1,113 @@
-import '/src/styles/TopPage.css'
-import TopWorkCard from '../OtherComponents/TopWorkCard'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import '/src/styles/TopPage.css';
+import TopWorkCard from '../OtherComponents/TopWorkCard';
 
 export default function TopPage({ category }) {
     const [selectedType, setSelectedType] = useState(
         category === 'music' ? 'single' : 'film'
     );
+    const [works, setWorks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const generateData = (type) => {
-        const data = [];
-        const prefix = category === 'music' 
-            ? (type === 'single' ? 'Сингл' : 'Альбом')
-            : (type === 'film' ? 'Фильм' : 'Сериал');
-        
-        for (let i = 1; i <= 30; i++) {
-            data.push({
-                id: i,
-                rank: i,
-                imageUrl: `https://i.scdn.co/image/ab67616d00001e021a8731c6268bebfd34facda7`,
-                title: `${prefix} ${i}`,
-                artist: category === 'music' 
-                    ? `Исполнитель ${i}` 
-                    : `Актёры ${i}`,
-                rating: Math.floor(Math.random() * (100 - 80 + 1)) + 80,
-                reviewsCount: Math.floor(Math.random() * 300) + 50
-            });
-        }
-        return data;
-    };
+    useEffect(() => {
+        setSelectedType(category === 'music' ? 'single' : 'film');
+    }, [category]);
 
-    const musicData = {
-        single: generateData('single'),
-        album: generateData('album')
-    };
+    useEffect(() => {
+        const fetchTopWorks = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(
+                    `http://localhost:8000/get_top_works.php?category=${category}&type=${selectedType}`
+                );
+                const data = await response.json();
+                if (!data.error) {
+                    setWorks(data);
+                }
+            } catch (error) {
+                console.error("Ошибка загрузки чарта:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const cinemaData = {
-        film: generateData('film'),
-        series: generateData('series')
-    };
-
-    const currentData = category === 'music' 
-        ? musicData[selectedType] 
-        : cinemaData[selectedType];
+        fetchTopWorks();
+    }, [category, selectedType]);
 
     const handleTypeChange = (e) => {
         setSelectedType(e.target.value);
     };
 
-    const firstColumn = currentData.slice(0, 15);
-    const secondColumn = currentData.slice(15, 30);
+    const firstColumn = works.slice(0, 15);
+    const secondColumn = works.slice(15, 30);
+
+    if (loading) return <div className="loading">Загрузка чарта...</div>;
 
     return (
         <div className="top-page-container">
             <div className="topworksblock">
                 <div className="top-header">
-                    <h1 className="toph2">ТОП-30</h1>
+                    <h1 className="toph2">ТОП-30: {category === 'music' ? 'МУЗЫКА' : 'КИНО'}</h1>
                     
-                    {category === 'music' ? (
-                        <select 
-                            value={selectedType}
-                            onChange={handleTypeChange}
-                            className="top-select"
-                        >
-                            <option value="single">Синглы</option>
-                            <option value="album">Альбомы</option>
-                        </select>
-                    ) : (
-                        <select 
-                            value={selectedType}
-                            onChange={handleTypeChange}
-                            className="top-select"
-                        >
-                            <option value="film">Фильмы</option>
-                            <option value="series">Сериалы</option>
-                        </select>
-                    )}
+                    <select 
+                        value={selectedType}
+                        onChange={handleTypeChange}
+                        className="top-select"
+                    >
+                        {category === 'music' ? (
+                            <>
+                                <option value="single">Синглы</option>
+                                <option value="album">Альбомы</option>
+                            </>
+                        ) : (
+                            <>
+                                <option value="film">Фильмы</option>
+                                <option value="series">Сериалы</option>
+                            </>
+                        )}
+                    </select>
                 </div>
 
                 <div className="top-columns">
-                    <div className="top-column">
-                        {firstColumn.map((item) => (
-                            <TopWorkCard
-                                key={`first-${item.id}`}
-                                rank={item.rank}
-                                imageUrl={item.imageUrl}
-                                title={item.title}
-                                artist={item.artist}
-                                rating={item.rating}
-                                reviewsCount={item.reviewsCount}
-                                workId={item.id}       
-                                workType={selectedType}     
-                                category={category}
-                            />
-                        ))}
-                    </div>
+                    {works.length > 0 ? (
+                        <>
+                            <div className="top-column">
+                                {firstColumn.map((item, index) => (
+                                    <TopWorkCard
+                                        key={item.id}
+                                        rank={index + 1}
+                                        imageUrl={item.imageUrl}
+                                        title={item.title}
+                                        artist={category === 'music' ? item.singers : item.actors}
+                                        rating={item.rating}
+                                        reviewsCount={item.totalReviews}
+                                        workSlug={item.slug} 
+                                        workType={selectedType}
+                                        category={category}
+                                    />
+                                ))}
+                            </div>
 
-                    <div className="top-column">
-                        {secondColumn.map((item) => (
-                            <TopWorkCard
-                                key={`second-${item.id}`}
-                                rank={item.rank}
-                                imageUrl={item.imageUrl}
-                                title={item.title}
-                                artist={item.artist}
-                                rating={item.rating}
-                                reviewsCount={item.reviewsCount}
-                                workId={item.id}         
-                                workType={selectedType} 
-                                category={category}
-                            />
-                        ))}
-                    </div>
+                            <div className="top-column">
+                                {secondColumn.map((item, index) => (
+                                    <TopWorkCard
+                                        key={item.id}
+                                        rank={index + 16}
+                                        imageUrl={item.imageUrl}
+                                        title={item.title}
+                                        artist={category === 'music' ? item.singers : item.actors}
+                                        rating={item.rating}
+                                        reviewsCount={item.totalReviews}
+                                        workSlug={item.slug}
+                                        workType={selectedType}
+                                        category={category}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <p className="no-data">В этой категории пока нет произведений.</p>
+                    )}
                 </div>
             </div>
         </div>

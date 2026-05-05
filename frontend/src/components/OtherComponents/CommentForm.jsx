@@ -74,7 +74,7 @@ export default function CommentForm({ workId, onReviewPosted }) {
                 <form onSubmit={handleSubmit}>
                     <div className='rating-block'>
                         <label>Ваша оценка: {rating}</label>
-                        <input type="range" min="0" max="100" value={rating} 
+                        <input type="range" min="1" max="100" value={rating} 
                                onChange={(e) => setRating(e.target.value)} className="rating-slider" />
                     </div>
                     

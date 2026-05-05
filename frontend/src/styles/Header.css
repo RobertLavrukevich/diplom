@@ -30,6 +30,7 @@ header {
 
 .searchBlock {
     flex: 0 1 400px;
+    margin-right: 10%;
 }
 
 .searchBlock form {

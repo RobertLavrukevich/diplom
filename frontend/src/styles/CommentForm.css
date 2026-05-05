@@ -105,35 +105,39 @@
 }
 
 .rating-slider {
-    flex: 1;
-    height: 6px;
+    -webkit-appearance: none; 
+    appearance: none;
     width: 100%;
-    background: linear-gradient(90deg, #c6c7d1 0%, #7f87c0 50%, #0611dc 100%);
-    border-radius: 3px;
+    height: 8px;             
+    background: linear-gradient(90deg, #9e9e9e 0%, #424242 50%, #000000 100%);    
+    border-radius: 10px;
     outline: none;
+    margin: 20px 0;
 }
 
 .rating-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background: white;
-    border: 2px solid #2365C7;
-    border-radius: 50%;
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 24px;            
+    height: 24px;
+    background: #ffffff;   
+    border: 2px solid #b0b0b0;
+    border-radius: 50%;       
     cursor: pointer;
-    transition: transform 0.2s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
 }
 
 .rating-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-    background: #2365C7;
+    transform: scale(1.1);
+    border-color: #7a7a7a;   
+    background: #fdfdfd;
 }
 
 .rating-value-display {
     min-width: 40px;
     height: 40px;
-    background: #2365C7;
+    background: #000000;
     color: white;
     border-radius: 20px;
     display: flex;
@@ -177,7 +181,7 @@
 
 .commenttitle input:focus {
     outline: none;
-    border-color: #2365C7;
+    border-color: #20262e;
     background: white;
     box-shadow: 0 0 0 4px rgba(35, 101, 199, 0.1);
 }
@@ -202,7 +206,7 @@
 
 .commentcontent textarea:focus {
     outline: none;
-    border-color: #2365C7;
+    border-color: #20262e;
     background: white;
     box-shadow: 0 0 0 4px rgba(35, 101, 199, 0.1);
 }
@@ -213,7 +217,7 @@
 }
 
 .sendcomment {
-    background: linear-gradient(135deg, #2365C7 0%, #1a4b9c 100%);
+    background: linear-gradient(135deg, #727272 0%, #242424 100%);
     color: white;
     border: none;
     padding: 16px 30px;
@@ -233,12 +237,12 @@
 .sendcomment:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(35, 101, 199, 0.4);
-    background: linear-gradient(135deg, #2a74e0 0%, #1f55b0 100%);
+    background: linear-gradient(135deg,  #727272 0%, #242424 100%);
 }
 
 .sendcomment:active {
     transform: translateY(0);
-    box-shadow: 0 2px 10px rgba(35, 101, 199, 0.3);
+    box-shadow: 0 2px 10px rgba(18, 37, 66, 0.3);
 }
 
 .sendcomment::before {

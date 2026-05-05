@@ -1,5 +1,7 @@
 import '/src/styles/TopWorkCard.css'
 import { useNavigate } from 'react-router-dom';
+import { getRatingColor } from '../../assets/getRatingColor';
+
 
 export default function TopWorkCard({ 
     rank, 
@@ -8,14 +10,14 @@ export default function TopWorkCard({
     artist, 
     rating, 
     reviewsCount , 
-    workId,  
+    workSlug,
     workType,
     category
 }) {
     const navigate = useNavigate();
 
      const handleClick = () => {
-        navigate(`/${category}/${workType}/${workId}`);
+        navigate(`/${category}/${workType}/${workSlug}`);
     };
 
     return (
@@ -31,7 +33,7 @@ export default function TopWorkCard({
                 <p className="top-artist">{artist}</p>
             </div>            
             <div className="top-stats">
-                <div className="top-rating">{rating}</div>
+                <div className="top-rating" style={{ backgroundColor: getRatingColor(rating) }}>{rating}</div>
                 <div className="top-reviews">
                     <span className="reviews-icon">Кол-во рецензий: </span>
                     {reviewsCount}

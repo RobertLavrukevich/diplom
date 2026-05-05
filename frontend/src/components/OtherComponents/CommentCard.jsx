@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '/src/styles/CommentCard.css';
+import { getRatingColor } from '../../assets/getRatingColor';
+
 
 export default function CommentCard({
     reviewId,
@@ -70,7 +72,7 @@ export default function CommentCard({
                     <img className='user-avatar' src={imageUrl} alt="avatar" />
                     <div className='user-name'>{userName}</div>
                 </div>
-                <div className='user-rating'>{userRating}</div>
+                <div className='user-rating' style={{ backgroundColor: getRatingColor(userRating) }}>{userRating}</div>
             </div>
             <div className='blockdown'>
                 <div className='work-info'>{nameArtist + " — " + nameWork}</div>

@@ -4,6 +4,7 @@ import { AuthContext } from '../Context/AuthContext';
 import '/src/styles/WorkPage.css';
 import CommentForm from '../OtherComponents/CommentForm';
 import CommentCard from '../OtherComponents/CommentCard';
+import { getRatingColor } from '../../assets/getRatingColor';
 
 export default function WorkPage({ category, workType }) {
     const { workSlug } = useParams();
@@ -35,7 +36,7 @@ export default function WorkPage({ category, workType }) {
                     genre: data.genre,
                     averageRating: data.averageRating,
                     totalReviews: data.totalReviews,
-                    typeName: data.typeName,
+                    type: data.typeName,
                     slug: data.slug
                 };
                 setWork(fetchedWork);
@@ -121,7 +122,7 @@ export default function WorkPage({ category, workType }) {
                         <div className="work-rating-block">
                             <div className="work-average-rating">
                                 <span className="rating-label">Рейтинг:</span>
-                                <span className="rating-value">{work.averageRating}</span>
+                                <span className="rating-value" style={{ backgroundColor: getRatingColor(work.averageRating) }}>{work.averageRating}</span>
                             </div>
                             <div className="work-reviews-count">
                                 📝 {work.totalReviews} рецензий

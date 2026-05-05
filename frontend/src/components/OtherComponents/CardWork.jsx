@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import '/src/styles/CardWork.css';
+import { getRatingColor } from '../../assets/getRatingColor';
 
-export default function CardWork({ id, slug, imageUrl, artistName, workName, rating, category, workTypeName }) {
+export default function CardWork({slug, imageUrl, artistName, workName, rating, category, workTypeName }) {
     const navigate = useNavigate();
 
     const getTypeSlug = (typeName) => {
@@ -25,7 +26,7 @@ export default function CardWork({ id, slug, imageUrl, artistName, workName, rat
                 <img className="workimg" src={imageUrl} alt={workName} />
                 <div className="work-name">{workName}</div>
                 <div className="name-artist">{artistName}</div>
-                <div className="rating">{rating}</div>
+                <div className="rating" style={{ backgroundColor: getRatingColor(rating) }}>{rating}</div>
                 <button className="workcardbtn" onClick={handleNavigate}>Перейти</button>
             </div>
         </div>
