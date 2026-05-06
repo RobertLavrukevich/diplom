@@ -22,7 +22,7 @@ export default function AuthPage() {
             } else if (formData.username.length > 50) {
                 newErrors.username = 'Имя пользователя не должно превышать 50 символов';
             } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-                newErrors.username = 'Имя пользователя может содержать только буквы, цифры и underscore';
+                newErrors.username = 'Имя пользователя может содержать только буквы, цифры и _';
             }
         }
 

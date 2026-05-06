@@ -216,7 +216,7 @@ export default function UserPage() {
                     </div>
                     <div className='userinfo'>
                         <h3 className='username'>{targetUser.username}</h3>
-                        <h4 className='usermail'>Почта: {targetUser.email}</h4>
+                        {/* <h4 className='usermail'>Почта: {targetUser.email}</h4> */}
                         <h4 className='userdate'>Дата регистрации: {registrationDate}</h4>
                         
                         {currentUser && currentUser.id !== targetUser.id && (

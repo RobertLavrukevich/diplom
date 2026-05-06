@@ -7,12 +7,20 @@ export default function CommentForm({ workId, onReviewPosted }) {
     const [rating, setRating] = useState(50);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         
         if (!user) {
             alert("Войдите, чтобы оставить рецензию");
+            return;
+        }
+
+
+        if (!title.trim() || !content.trim()) {
+            setError("Пожалуйста, заполните заголовок и текст рецензии");
             return;
         }
 
@@ -87,6 +95,7 @@ export default function CommentForm({ workId, onReviewPosted }) {
                             <label>Содержание</label>
                             <textarea rows="6" value={content} onChange={(e) => setContent(e.target.value)} required />
                         </div>
+                        {error && <p style={{ color: 'red', fontSize: '16px', marginBottom: '15px' }}>{error}</p>}
                         <button type="submit" className='sendcomment'>Отправить рецензию</button>
                     </div>
                 </form>
