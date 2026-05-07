@@ -13,10 +13,10 @@ export default function WorkPage({ category, workType }) {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isFavorite, setIsFavorite] = useState(false);
-    const [visibleReviewsCount, setVisibleReviewsCount] = useState(1);
+    const [visibleReviewsCount, setVisibleReviewsCount] = useState(4);
 
     const showMoreReviews = () => {
-        setVisibleReviewsCount(prevCount => prevCount + 1);
+        setVisibleReviewsCount(prevCount => prevCount + 4);
     };
 
     useEffect(() => {

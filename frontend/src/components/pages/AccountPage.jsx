@@ -25,6 +25,7 @@ const MyReviews = ({ reviews }) => {
           imageUrl={review.avatar_url || 'https://zefirka.club/wallpapers/uploads/posts/2023-03/1678141011_zefirka-club-p-krutie-avatarki-na-stendoff-29.jpg'} 
           userName={review.username} 
           userRating={review.rating} 
+          isClickable={false}
           commentTitle={review.review_title} 
           commentContent={review.content} 
           nameWork={review.work_title} 
