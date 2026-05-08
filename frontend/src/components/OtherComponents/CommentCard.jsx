@@ -69,7 +69,7 @@ export default function CommentCard({
                     onClick={handleUserClick} 
                     style={{ cursor: isClickable ? 'pointer' : 'default' }}
                 >
-                    <img className='user-avatar' src={imageUrl} alt="avatar" />
+                    <img className='user-avatar' src={imageUrl || "/icons/avatar-svgrepo-com.svg"} alt="avatar"  onError={(e) => { e.target.src = "/icons/avatar-svgrepo-com.svg"; }}/>
                     <div className='user-name'>{userName}</div>
                 </div>
                 <div className='user-rating' style={{ backgroundColor: getRatingColor(userRating) }}>{userRating}</div>

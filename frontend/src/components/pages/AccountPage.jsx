@@ -22,7 +22,7 @@ const MyReviews = ({ reviews }) => {
       {reviews.map((review) => (
         <CommentCard 
           key={review.id}
-          imageUrl={review.avatar_url || 'https://zefirka.club/wallpapers/uploads/posts/2023-03/1678141011_zefirka-club-p-krutie-avatarki-na-stendoff-29.jpg'} 
+          imageUrl={review.avatar_url} 
           userName={review.username} 
           userRating={review.rating} 
           isClickable={false}
@@ -193,7 +193,7 @@ useEffect(() => {
           <div className='user-avatar'>
             <img 
               className='avaimg' 
-              src={user.avatar_url || "https://storage.yandexcloud.net/.../default.png"} 
+              src={user.avatar_url || "/icons/avatar-svgrepo-com.svg"}
               alt="userava" 
             />
           </div>

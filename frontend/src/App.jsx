@@ -16,6 +16,7 @@ import WorkPage from './components/pages/WorkPage';
 import MainSection from './components/Sections/MainSection';
 import AuthPage from './components/pages/AuthPage';
 import UserPage from './components/pages/UserPage';
+import AdminPage from './components/pages/AdminPage';
 
 export default function App() {
   return(
@@ -49,6 +50,8 @@ export default function App() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/user/:username" element={<UserPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

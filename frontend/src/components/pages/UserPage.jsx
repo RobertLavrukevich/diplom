@@ -62,7 +62,7 @@ const UserReviews = ({ reviews }) => {
                     key={review.id}
                     userId={review.user_id}
                     isClickable={false}
-                    imageUrl={review.avatar_url || 'https://zefirka.club/wallpapers/uploads/posts/2023-03/1678141011_zefirka-club-p-krutie-avatarki-na-stendoff-29.jpg'} 
+                    imageUrl={review.avatar_url} 
                     userName={review.username} 
                     userRating={review.rating} 
                     commentTitle={review.review_title} 
@@ -210,13 +210,12 @@ export default function UserPage() {
                     <div className='user-avatar'>
                         <img 
                             className='avaimg' 
-                            src={targetUser.avatar_url || "https://storage.yandexcloud.net/static-production/rztbackend/users/default.png"} 
+                            src={targetUser.avatar_url || "/icons/avatar-svgrepo-com.svg"} 
                             alt="userava" 
                         />
                     </div>
                     <div className='userinfo'>
                         <h3 className='username'>{targetUser.username}</h3>
-                        {/* <h4 className='usermail'>Почта: {targetUser.email}</h4> */}
                         <h4 className='userdate'>Дата регистрации: {registrationDate}</h4>
                         
                         {currentUser && currentUser.id !== targetUser.id && (

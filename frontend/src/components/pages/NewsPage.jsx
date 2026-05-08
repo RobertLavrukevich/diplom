@@ -5,11 +5,11 @@ import '/src/styles/NewsPage.css';
 export default function NewsPage({ category }) {
     const [newsList, setNewsList] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [visibleNewsCount, setVisibleNewsCount] = useState(1);
+    const [visibleNewsCount, setVisibleNewsCount] = useState(3);
 
     useEffect(() => {
         setLoading(true);
-        setVisibleNewsCount(1);
+        setVisibleNewsCount(3);
         fetch(`http://localhost:8000/get_news.php?category=${category}`)
             .then(res => res.json())
             .then(data => {
@@ -25,7 +25,7 @@ export default function NewsPage({ category }) {
     }, [category]);
 
     const showMoreNews = () => {
-        setVisibleNewsCount(prev => prev + 1);
+        setVisibleNewsCount(prev => prev + 3);
     };
 
     if (loading) return <div className="loading">Загрузка новостей...</div>;

@@ -11,7 +11,7 @@ if (!$data['user_id'] || !$data['work_id'] || !$data['content']) {
 
 try {
     $sql = "INSERT INTO Reviews (user_id, work_id, title, content, rating, status) 
-            VALUES (:user_id, :work_id, :title, :content, :rating, 'published')";
+            VALUES (:user_id, :work_id, :title, :content, :rating, 'pending')";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([

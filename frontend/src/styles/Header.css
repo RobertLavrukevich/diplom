@@ -113,7 +113,8 @@ header {
 .useravatar{
     display: block;
     margin: auto;
-    width: 90%;
+    border-radius: 50%;
+    width: 100%;
 }
 
 .login-link {

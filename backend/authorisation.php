@@ -22,7 +22,9 @@ if (!empty($data['email']) && !empty($data['password'])) {
                 "id" => $user['id'],
                 "username" => $user['username'],
                 "email" => $user['email'],
-                "created_at" => $user['created_at']
+                "created_at" => $user['created_at'],
+                "role_id" => $user['role_id'],
+                "avatar_url" => $user['avatar_url']
             ]
         ];
 

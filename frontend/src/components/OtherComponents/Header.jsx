@@ -79,6 +79,11 @@ export default function Header({ category}) {
                         <img src="/icons/question-circle-svgrepo-com.svg" className='icon' alt="faq" />
                         FAQ
                     </Link>
+                    {user && Number(user.role_id) === 2 && (
+                    <Link to="/admin" className="admin-link">
+                        Админ
+                    </Link>
+                    )}
                 </div>
             </div>
         </header>
