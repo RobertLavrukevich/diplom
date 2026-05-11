@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import Header from '../OtherComponents/Header';
-import Footer from '../OtherComponents/Footer';
+import Header from '../layout/Header';
+import Footer from '../layout/Footer';
 
 export default function MainLayout() {
     const location = useLocation();

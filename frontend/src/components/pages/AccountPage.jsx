@@ -3,7 +3,7 @@ import { useState, useEffect, } from 'react'
 import { useContext } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom'
-import CommentCard from '../OtherComponents/CommentCard';
+import CommentCard from '../cards/CommentCard';
 
 const ActivityButton = ({ active, onClick, children }) => {
   return (
@@ -104,7 +104,7 @@ const Subscriptions = ({ userId }) => {
 
   useEffect(() => {
     if (userId) {
-      fetch(`http://localhost:8000/get_subscriptions.php?user_id=${userId}`)
+      fetch(`http://localhost:8000/public/user/get_subscriptions.php?user_id=${userId}`)
         .then(res => res.json())
         .then(data => !data.error && setSubs(data));
     }
@@ -144,11 +144,11 @@ export default function AccountPage() {
 
 useEffect(() => {
     if (user && user.id) {
-      fetch(`http://localhost:8000/get_user_reviews.php?user_id=${user.id}`)
+      fetch(`http://localhost:8000/public/user/get_user_reviews.php?user_id=${user.id}`)
         .then(res => res.json())
         .then(data => !data.error && setUserReviews(data));
       
-      fetch(`http://localhost:8000/get_user_favorites.php?user_id=${user.id}`)
+      fetch(`http://localhost:8000/public/user/get_user_favorites.php?user_id=${user.id}`)
         .then(res => res.json())
         .then(data => !data.error && setFavorites(data));
     }

@@ -3,10 +3,10 @@ import { AuthContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '/src/styles/AccountPage.css'; 
 import '/src/styles/AdminPage.css';
-import AddWork from './AddWork';
-import ModerateReviews from './ModerateReviews';
-import AddGenre from './AddGenre';
-import AddNews from './AddNews';
+import AddWork from '../admin/AddWork';
+import ModerateReviews from '../admin/ModerateReviews';
+import AddGenre from '../admin/AddGenre';
+import AddNews from '../admin/AddNews';
 
 
 export default function AdminPage() {

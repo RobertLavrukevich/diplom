@@ -1,19 +1,91 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Play:wght@400;700&display=swap');
-
-.statblock{
+.statblock {
     display: flex;
-    font-family: "Play", sans-serif;
     justify-content: center;
-    justify-self: center;
+    padding: 0 20px;
     margin-top: 3%;
-}
-.statdata{
-    display: flex;
-    flex-direction: row;
-    font-size: 20px;
-    font-weight: 700;
+    font-family: "Play", sans-serif;
 }
 
-li{
-    list-style-type: none;
+.stat-container {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.stath2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.stat-list {
+    padding: 0;
+    margin: 0;
+}
+
+.stat-list li {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+    font-weight: 700;
+    list-style: none;
+}
+
+.stat-list li:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.stat-value {
+    color: #333;
+    font-variant-numeric: tabular-nums;
+}
+
+
+@media (max-width: 768px) {
+    .stat-container {
+        max-width: 100%;
+    }
+    .stat-list li {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .statblock {
+        margin-top: 20px;
+    }
+    
+    .stath2 {
+        font-size: 20px;
+    }
+
+    .stat-list li {
+        padding: 10px 0;
+        font-size: 14px;
+    }
+
+    .stat-label {
+        gap: 10px;
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+    }
 }

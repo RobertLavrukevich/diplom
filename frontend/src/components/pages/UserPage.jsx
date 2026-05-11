@@ -2,7 +2,7 @@ import '/src/styles/AccountPage.css';
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
-import CommentCard from '../OtherComponents/CommentCard';
+import CommentCard from '../cards/CommentCard';
 
 const ActivityButton = ({ active, onClick, children }) => {
     return (
@@ -18,7 +18,7 @@ const Subscriptions = ({ userId }) => {
 
     useEffect(() => {
         if (userId) {
-            fetch(`http://localhost:8000/get_subscriptions.php?user_id=${userId}`)
+            fetch(`http://localhost:8000/public/user/get_subscriptions.php?user_id=${userId}`)
                 .then(res => res.json())
                 .then(data => {
                     if (!data.error) setSubs(data);
@@ -139,16 +139,16 @@ export default function UserPage() {
         window.scrollTo(0, 0);
         if (username) {
             setLoading(true);
-            fetch(`http://localhost:8000/get_user_info.php?username=${username}`)
+            fetch(`http://localhost:8000/public/user/get_user_info.php?username=${username}`)
                 .then(res => res.json())
                 .then(data => {
                     if (!data.error) {
                         setTargetUser(data);
-                        fetch(`http://localhost:8000/get_user_reviews.php?user_id=${data.id}`)
+                        fetch(`http://localhost:8000/public/user/get_user_reviews.php?user_id=${data.id}`)
                             .then(res => res.json())
                             .then(reviewsData => !reviewsData.error && setUserReviews(reviewsData));
                         
-                        fetch(`http://localhost:8000/get_user_favorites.php?user_id=${data.id}`)
+                        fetch(`http://localhost:8000/public/user/get_user_favorites.php?user_id=${data.id}`)
                             .then(res => res.json())
                             .then(favData => !favData.error && setFavorites(favData));
                     }
@@ -159,7 +159,7 @@ export default function UserPage() {
 
     useEffect(() => {
         if (currentUser && targetUser && currentUser.id !== targetUser.id) {
-            fetch(`http://localhost:8000/check_subscription.php?follower_id=${currentUser.id}&following_id=${targetUser.id}`)
+            fetch(`http://localhost:8000/public/social/check_subscription.php?follower_id=${currentUser.id}&following_id=${targetUser.id}`)
                 .then(res => res.json())
                 .then(data => setIsSubscribed(data.isSubscribed));
         }
@@ -171,7 +171,7 @@ export default function UserPage() {
             return;
         }
 
-        fetch('http://localhost:8000/toggle_subscription.php', {
+        fetch('http://localhost:8000/public/social/toggle_subscription.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

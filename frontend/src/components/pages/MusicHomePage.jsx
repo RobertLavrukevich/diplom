@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import StatisticaMusic from "../OtherComponents/StatisticaMusic";
-import CardWork from "../OtherComponents/CardWork";
-import CommentCard from "../OtherComponents/CommentCard";
+import CardWork from "../cards/CardWork";
+import CommentCard from "../cards/CommentCard";
 import '/src/styles/MusicHome.css';
 
 export default function MusicHomePage() {
@@ -16,16 +16,16 @@ export default function MusicHomePage() {
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                const s = await fetch(`http://localhost:8000/get_stats.php?category=${category}`).then(res => res.json());
+                const s = await fetch(`http://localhost:8000/public/user/get_stats.php?category=${category}`).then(res => res.json());
                 setStats(s);
 
-                const aw = await fetch(`http://localhost:8000/get_active_discussions.php?category=${category}`).then(res => res.json());
+                const aw = await fetch(`http://localhost:8000/public/content/get_active_discussions.php?category=${category}`).then(res => res.json());
                 setActiveWorks(Array.isArray(aw) ? aw : []);
 
-                const lr = await fetch(`http://localhost:8000/get_latest_works.php?category=${category}`).then(res => res.json());
+                const lr = await fetch(`http://localhost:8000/public/content/get_latest_works.php?category=${category}`).then(res => res.json());
                 setLatestReleases(Array.isArray(lr) ? lr : []);
 
-                const rev = await fetch(`http://localhost:8000/get_latest_reviews.php?category=${category}`).then(res => res.json());
+                const rev = await fetch(`http://localhost:8000/public/content/get_latest_reviews.php?category=${category}`).then(res => res.json());
                 setLatestReviews(Array.isArray(rev) ? rev : []);
             } catch (err) {
                 console.error("Ошибка загрузки данных:", err);

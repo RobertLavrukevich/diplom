@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import '/src/styles/SearchPage.css'
-import CardWork from '../OtherComponents/CardWork';
+import CardWork from '../cards/CardWork';
 
 export default function SearchPage({ category }) {
     const [searchParams] = useSearchParams();
@@ -15,7 +15,7 @@ export default function SearchPage({ category }) {
 
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:8000/search.php?category=${category}&q=${encodeURIComponent(query)}`);
+                const response = await fetch(`http://localhost:8000/public/content/search.php?category=${category}&q=${encodeURIComponent(query)}`);
                 const data = await response.json();
                 
                 if (data.error) {

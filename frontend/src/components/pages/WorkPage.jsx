@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
 import '/src/styles/WorkPage.css';
-import CommentForm from '../OtherComponents/CommentForm';
-import CommentCard from '../OtherComponents/CommentCard';
+import CommentForm from '../forms/CommentForm';
+import CommentCard from '../cards/CommentCard';
 import { getRatingColor } from '../../assets/getRatingColor';
 
 export default function WorkPage({ category, workType }) {
@@ -23,7 +23,7 @@ export default function WorkPage({ category, workType }) {
     const fetchWorkData = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/get_work.php?slug=${workSlug}`);
+            const response = await fetch(`http://localhost:8000/public/content/get_work.php?slug=${workSlug}`);
             const data = await response.json();
             if (!data.error) {
                 const fetchedWork = {
@@ -63,7 +63,7 @@ export default function WorkPage({ category, workType }) {
         if (!targetId) return;
         try {
             const userIdParam = user ? `&user_id=${user.id}` : '';
-            const response = await fetch(`http://localhost:8000/get_reviews.php?work_id=${targetId}${userIdParam}`);     
+            const response = await fetch(`http://localhost:8000/public/content/get_reviews.php?work_id=${targetId}${userIdParam}`);     
             const data = await response.json();
             setReviews(data);
         } catch (err) { console.error(err); }
@@ -71,7 +71,7 @@ export default function WorkPage({ category, workType }) {
 
     useEffect(() => {
         if (work?.id && user) {
-            fetch(`http://localhost:8000/check_favorite.php?user_id=${user.id}&work_id=${work.id}`)
+            fetch(`http://localhost:8000/public/social/check_favorite.php?user_id=${user.id}&work_id=${work.id}`)
                 .then(res => res.json())
                 .then(data => setIsFavorite(data.isFavorite));
         }
@@ -80,7 +80,7 @@ export default function WorkPage({ category, workType }) {
     const handleToggleFavorite = async () => {
         if (!user) return alert("Пожалуйста, войдите в аккаунт");
         try {
-            const response = await fetch(`http://localhost:8000/toggle_favorite.php`, {
+            const response = await fetch(`http://localhost:8000/public/social/toggle_favorite.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.id, work_id: work.id })

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import '/src/styles/TopPage.css';
-import TopWorkCard from '../OtherComponents/TopWorkCard';
+import TopWorkCard from '../cards/TopWorkCard';
 
 export default function TopPage({ category }) {
     const [selectedType, setSelectedType] = useState(
@@ -18,7 +18,7 @@ export default function TopPage({ category }) {
             setLoading(true);
             try {
                 const response = await fetch(
-                    `http://localhost:8000/get_top_works.php?category=${category}&type=${selectedType}`
+                    `http://localhost:8000/public/content/get_top_works.php?category=${category}&type=${selectedType}`
                 );
                 const data = await response.json();
                 if (!data.error) {

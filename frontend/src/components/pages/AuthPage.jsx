@@ -59,7 +59,7 @@ export default function AuthPage() {
         const endpoint = isLogin ? 'authorisation.php' : 'registration.php';
         
         try {
-            const response = await fetch(`http://localhost:8000/${endpoint}`, {
+            const response = await fetch(`http://localhost:8000/public/auth/${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

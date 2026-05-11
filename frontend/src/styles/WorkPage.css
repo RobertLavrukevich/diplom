@@ -101,14 +101,7 @@
 .auth-reminder a:hover {
     text-decoration: underline;
 }
-/* .rating-value {
-    font-size: 32px;
-    font-weight: bold;
-    color: #ffffff;
-    border-radius: 100%;
-    padding: 4px 7px;
-    background: #2365C7;
-} */
+
   .rating-value {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
@@ -259,6 +252,17 @@
         max-width: 300px;
         margin: 0 auto;
     }
+
+    .exit-btn{
+        width:16%;
+    }
+}
+
+
+@media (max-width: 768px) {
+  .comment-card-block{
+    width:90%;
+  }
 }
 
 @media (max-width: 600px) {
@@ -275,7 +279,16 @@
         align-items: flex-start;
         gap: 10px;
     }
+
+    .exit-btn{
+        width: 20%;
+    }
 }
 
 
 
+@media (max-width: 425px) {
+.exit-btn{
+        width: 30%;
+    }
+}

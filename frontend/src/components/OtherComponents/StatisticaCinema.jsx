@@ -1,21 +1,40 @@
 import '/src/styles/Statistica.css'
-export default function StatisticaCinema({users, films, series, comments}){
+
+export default function StatisticaMusic({users, tracks, albums, comments}){
     return(
         <div className="statblock">
-            <h2>Статистика</h2>
-            <div className="statdata">
-                <ul className='datatext'>
-                    <li><img src="/icons/avatar-svgrepo-com.svg" className='icon'/> Всего пользователей</li>
-                    <li><img src="/icons/music-svgrepo-com.svg" className='icon'/> Всего фильмов</li>
-                    <li><img src="/icons/album-svgrepo-com.svg" className='icon'/> Всего сериалов</li>
-                    <li><img src="/icons/comment-svgrepo-com.svg" className='icon'/> Рецензий</li>
+            <div className="stat-container">
+                <h2 className='stath2'>Статистика</h2>
+                <ul className="stat-list">
+                    <li>
+                        <div className="stat-label">
+                            <img src="/icons/avatar-svgrepo-com.svg" className='icon' alt="users" /> 
+                            <span>Всего пользователей</span>
+                        </div>
+                        <span className='stat-value'>{users}</span>
+                    </li>
+                    <li>
+                        <div className="stat-label">
+                            <img src="/icons/film-alt-svgrepo-com.svg" className='icon' alt="tracks" /> 
+                            <span>Всего фильмов</span>
+                        </div>
+                        <span className='stat-value'>{films}</span>
+                    </li>
+                    <li>
+                        <div className="stat-label">
+                            <img src="/icons/series-svgrepo-com.svg" className='icon' alt="albums" /> 
+                            <span>Всего сериалов</span>
+                        </div>
+                        <span className='stat-value'>{series}</span>
+                    </li>
+                    <li>
+                        <div className="stat-label">
+                            <img src="/icons/comment-svgrepo-com.svg" className='icon' alt="reviews" /> 
+                            <span>Рецензий</span>
+                        </div>
+                        <span className='stat-value'>{comments}</span>
+                    </li>
                 </ul>
-                <ul className='datadigits'>
-                    <li>{users}</li>
-                    <li>{films}</li>
-                    <li>{series}</li>
-                    <li>{comments}</li>
-                </ul>  
             </div>
         </div>
     )

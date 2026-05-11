@@ -267,10 +267,14 @@
     
     .review-rules-container {
         flex: auto;
-        width: 100%;
+        width: 90%;
         position: static;
     }
-    
+
+    .form-comment {
+        width: 90%;
+    }
+
     .rules-list {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

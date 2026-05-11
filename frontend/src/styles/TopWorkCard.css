@@ -138,6 +138,13 @@
     }
 }
 
+@media (max-width: 454px) {
+    .top-card {
+        width: 80%;
+    }
+}
+
+
 @media (max-width: 400px) {
     .top-card {
         flex-wrap: wrap;
@@ -162,7 +169,6 @@
     .top-stats {
         width: 100%;
         flex-direction: row;
-        justify-content: space-between;
         align-items: center;
     }
 }

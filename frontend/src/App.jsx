@@ -7,7 +7,6 @@ import CinemaHomePage from './components/pages/CinemaHomePage';
 import NewsPage from './components/pages/NewsPage';
 import TopPage from './components/pages/TopPage';
 import FAQPage from './components/pages/FAQPage';
-import AboutPage from './components/pages/AboutPage';
 import SearchPage from './components/pages/SearchPage';
 import AccountPage from './components/pages/AccountPage';
 import MusicSection from './components/Sections/MusicSection';
@@ -30,7 +29,6 @@ export default function App() {
             <Route path="top30" element={<TopPage category="music" />} />
             <Route path="news" element={<NewsPage category="music" />} />
             <Route path="faq" element={<FAQPage />} />
-            <Route path="about" element={<AboutPage />} />
             <Route path="album/:workSlug" element={<WorkPage category="music" workType="album" />} />
             <Route path="single/:workSlug" element={<WorkPage category="music" workType="single" />} />
             <Route path="search" element={<SearchPage category="music" />} />
@@ -41,7 +39,6 @@ export default function App() {
             <Route path="top30" element={<TopPage category="cinema" />} />
             <Route path="news" element={<NewsPage category="cinema" />} />
             <Route path="faq" element={<FAQPage />} />
-            <Route path="about" element={<AboutPage />} />
             <Route path="film/:workSlug" element={<WorkPage category="cinema" workType="film" />} />
             <Route path="series/:workSlug" element={<WorkPage category="cinema" workType="series" />} /> 
             <Route path="search" element={<SearchPage category="cinema" />} />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import NewsCard from "../OtherComponents/NewsCard";
+import NewsCard from "../cards/NewsCard";
 import '/src/styles/NewsPage.css';
 
 export default function NewsPage({ category }) {
@@ -10,7 +10,7 @@ export default function NewsPage({ category }) {
     useEffect(() => {
         setLoading(true);
         setVisibleNewsCount(3);
-        fetch(`http://localhost:8000/get_news.php?category=${category}`)
+        fetch(`http://localhost:8000/public/content/get_news.php?category=${category}`)
             .then(res => res.json())
             .then(data => {
                 if (!data.error) {
