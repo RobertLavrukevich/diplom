@@ -1,6 +1,6 @@
 import '/src/styles/Statistica.css'
 
-export default function StatisticaMusic({users, tracks, albums, comments}){
+export default function StatisticaMusic({users, films, series, comments}){
     return(
         <div className="statblock">
             <div className="stat-container">
