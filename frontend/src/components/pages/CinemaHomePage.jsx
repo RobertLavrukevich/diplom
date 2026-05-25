@@ -3,7 +3,7 @@ import { AuthContext } from '../Context/AuthContext';
 import StatisticaCinema from '../OtherComponents/StatisticaCinema'
 import CardWork from '../cards/CardWork'
 import CommentCard from "../cards/CommentCard";
-import '/src/styles/Statistica.css';
+import MainSlider from '../OtherComponents/MainSlider';
 
 export default function CinemaHomePage() {
     const category = "cinema"; 
@@ -36,6 +36,8 @@ export default function CinemaHomePage() {
 
     return (
         <>
+            <MainSlider />
+        
             <StatisticaCinema 
                 users={stats.users} 
                 films={stats.films} 

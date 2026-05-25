@@ -12,7 +12,7 @@ const ActivityButton = ({ active, onClick, children }) => {
 };
 
 
-const MyReviews = ({ reviews }) => {
+const MyReviews = ({ reviews, onDeleteClick }) => {
   if (reviews.length === 0) {
     return <p className="no-data">Вы еще не написали ни одной рецензии.</p>;
   }
@@ -22,6 +22,7 @@ const MyReviews = ({ reviews }) => {
       {reviews.map((review) => (
         <CommentCard 
           key={review.id}
+          reviewId={review.id}
           imageUrl={review.avatar_url} 
           userName={review.username} 
           userRating={review.rating} 
@@ -30,6 +31,8 @@ const MyReviews = ({ reviews }) => {
           commentContent={review.content} 
           nameWork={review.work_title} 
           nameArtist={review.singers || review.actors}
+          showDeleteButton={true}
+          onDeleteClick={onDeleteClick}
         />
       ))}
     </>
@@ -141,6 +144,8 @@ export default function AccountPage() {
   const [userReviews, setUserReviews] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState(null);
 
 useEffect(() => {
     if (user && user.id) {
@@ -168,6 +173,36 @@ useEffect(() => {
     navigate('/auth');
   };
 
+  const handleOpenModal = (reviewId) => {
+    setSelectedReviewId(reviewId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedReviewId(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+        const response = await fetch(`http://localhost:8000/public/social/delete_review.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: user.id, review_id: selectedReviewId })
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            setUserReviews(prev => prev.filter(review => review.id !== selectedReviewId));
+            handleCloseModal();
+        } else {
+            alert(data.error || "Не удалось удалить рецензию");
+        }
+    } catch (err) {
+        console.error("Ошибка при удалении рецензии:", err);
+    }
+  };
+
   const registrationDate = user.created_at 
     ? new Date(user.created_at).toLocaleDateString('ru-RU') 
     : 'Не указана';
@@ -176,7 +211,7 @@ useEffect(() => {
  const renderActivity = () => {
     switch(activeTab) {
       case 'reviews':
-        return <MyReviews reviews={userReviews} />;
+        return <MyReviews reviews={userReviews} onDeleteClick={handleOpenModal}/>;
       case 'liked':
         return <LikedItems favorites={favorites} />;
       case 'subscriptions':
@@ -226,6 +261,18 @@ useEffect(() => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h4>Удалить рецензию?</h4>
+            <p>После удаления рецензию нельзя будет восстановить.</p>
+            <div className="modal-buttons">
+              <button className="confirm-btn" onClick={handleDeleteConfirm}>Удалить</button>
+              <button className="cancel-btn" onClick={handleCloseModal}>Отмена</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

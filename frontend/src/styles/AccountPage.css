@@ -294,6 +294,80 @@
   border: none;
 }
 
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #1f1f1f; 
+    padding: 20px 25px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 320px;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+}
+
+.modal-content h4 {
+    margin: 0 0 10px 0;
+    color: #fff;
+    font-size: 18px;
+}
+
+.modal-content p {
+    color: #aaa;
+    font-size: 14px;
+    margin: 0 0 20px 0;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+}
+
+.confirm-btn {
+    background-color: #e50914;
+    color: white;
+}
+
+.confirm-btn:hover {
+    background-color: #b80710;
+}
+
+.cancel-btn {
+    background-color: #333;
+    color: #ccc;
+}
+
+.cancel-btn:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+
+
 @media (max-width: 768px) {
   .accountblock {
     padding: 20px;

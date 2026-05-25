@@ -3,6 +3,7 @@ import { AuthContext } from '../Context/AuthContext';
 import StatisticaMusic from "../OtherComponents/StatisticaMusic";
 import CardWork from "../cards/CardWork";
 import CommentCard from "../cards/CommentCard";
+import MainSlider from '../OtherComponents/MainSlider';
 import '/src/styles/MusicHome.css';
 
 export default function MusicHomePage() {
@@ -36,6 +37,8 @@ export default function MusicHomePage() {
 
     return (
         <>
+            <MainSlider />
+            
             <StatisticaMusic 
                 users={stats.users} 
                 tracks={stats.tracks} 

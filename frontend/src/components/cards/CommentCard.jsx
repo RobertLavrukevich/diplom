@@ -18,7 +18,9 @@ export default function CommentCard({
     isClickable = true,
     initialLikesCount = 0,
     initialIsLiked = false,
-    showLikeSection = false 
+    showLikeSection = false,
+    showDeleteButton = false,
+    onDeleteClick
 }) {
     const navigate = useNavigate();
     const [isLiked, setIsLiked] = useState(initialIsLiked);
@@ -92,6 +94,14 @@ export default function CommentCard({
                         <span className="likes-counter">{likesCount}</span>
                     </div>
                 )}
+                {showDeleteButton && (
+                        <button 
+                            className="review-delete-btn" 
+                            onClick={() => onDeleteClick(reviewId)}
+                        >
+                            Удалить
+                        </button>
+                    )}
             </div>
         </div>
     );
