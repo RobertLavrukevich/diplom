@@ -6,7 +6,7 @@ import CommentForm from '../forms/CommentForm';
 import CommentCard from '../cards/CommentCard';
 import { getRatingColor } from '../../assets/getRatingColor';
 
-export default function WorkPage({ category, workType }) {
+export default function WorkPage({ workType }) {
     const { workSlug } = useParams();
     const { user } = useContext(AuthContext);
     const [work, setWork] = useState(null);
@@ -14,38 +14,39 @@ export default function WorkPage({ category, workType }) {
     const [loading, setLoading] = useState(true);
     const [isFavorite, setIsFavorite] = useState(false);
     const [visibleReviewsCount, setVisibleReviewsCount] = useState(4);
+    const [reviewFilter, setReviewFilter] = useState('actual');
 
     const showMoreReviews = () => {
         setVisibleReviewsCount(prevCount => prevCount + 4);
     };
 
     useEffect(() => {
-    const fetchWorkData = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch(`http://localhost:8000/public/content/get_work.php?slug=${workSlug}`);
-            const data = await response.json();
-            if (!data.error) {
-                const fetchedWork = {
-                    id: data.id,
-                    title: data.title,
-                    description: data.description,
-                    artist: data.category === 'music' ? data.singers : data.actors,
-                    imageUrl: data.imageUrl,
-                    releaseDate: data.releaseDate,
-                    genre: data.genre,
-                    averageRating: data.averageRating,
-                    totalReviews: data.totalReviews,
-                    type: data.typeName,
-                    slug: data.slug
-                };
-                setWork(fetchedWork);
+        const fetchWorkData = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`http://localhost:8000/public/content/get_work.php?slug=${workSlug}`);
+                const data = await response.json();
+                if (!data.error) {
+                    const fetchedWork = {
+                        id: data.id,
+                        title: data.title,
+                        description: data.description,
+                        artist: data.category === 'music' ? data.singers : data.actors,
+                        imageUrl: data.imageUrl,
+                        releaseDate: data.releaseDate,
+                        genre: data.genre,
+                        averageRating: data.averageRating,
+                        totalReviews: data.totalReviews,
+                        type: data.typeName,
+                        slug: data.slug
+                    };
+                    setWork(fetchedWork);
+                }
+            } catch (error) {
+                console.error("Ошибка загрузки:", error);
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            console.error("Ошибка загрузки:", error);
-        } finally {
-            setLoading(false);
-        }
         };
 
         fetchWorkData();
@@ -56,7 +57,6 @@ export default function WorkPage({ category, workType }) {
             fetchReviews(work.id);
         }
     }, [work?.id, user]);
-
 
     const fetchReviews = async (id) => {
         const targetId = id || work?.id;
@@ -90,7 +90,18 @@ export default function WorkPage({ category, workType }) {
         } catch (err) { console.error(err); }
     };
 
+    const getProcessedReviews = () => {
+        let result = [...reviews];
+        
+        if (reviewFilter === 'my') {
+            result = result.filter(r => user && String(r.user_id) === String(user.id));
+        } else if (reviewFilter === 'popular') {
+            result.sort((a, b) => b.likes_count - a.likes_count);
+        }        
+        return result;
+    };
 
+    const processedReviews = getProcessedReviews();
 
     if (loading) return <div className="loading">Загрузка...</div>;
     if (!work) return <div className="loading">Произведение не найдено</div>;
@@ -144,6 +155,7 @@ export default function WorkPage({ category, workType }) {
                         <p className="work-description">{work.description}</p>
                     </div>
                 </div>
+                
                 <div className="comment-section-wrapper">
                     {user ? (
                         <CommentForm workId={work.id} onReviewPosted={fetchReviews} />
@@ -155,11 +167,26 @@ export default function WorkPage({ category, workType }) {
                 </div>
 
                 <div className="reviews-section">
-                    <h2 className="reviews-title">Рецензии ({reviews.length})</h2>
+                    <div className="reviews-header">
+                        <h2 className="reviews-title">Рецензии ({reviews.length})</h2>
+                        <select 
+                            value={reviewFilter} 
+                            onChange={(e) => {
+                                setReviewFilter(e.target.value);
+                                setVisibleReviewsCount(4);
+                            }} 
+                            className="review-filter-select"
+                        >
+                            <option value="actual">Последние</option>
+                            <option value="popular">Популярные</option>
+                            {user && <option value="my">Мои</option>}
+                        </select>
+                    </div>
+
                     <div className="reviews-list">
-                        {reviews.length > 0 ? (
+                        {processedReviews.length > 0 ? (
                             <>
-                                {reviews.slice(0, visibleReviewsCount).map(review => (
+                                {processedReviews.slice(0, visibleReviewsCount).map(review => (
                                     <CommentCard
                                         key={review.id}
                                         userId={review.user_id}
@@ -177,7 +204,7 @@ export default function WorkPage({ category, workType }) {
                                         initialIsLiked={!!review.is_liked}
                                     />
                                 ))}
-                                {visibleReviewsCount < reviews.length && (
+                                {visibleReviewsCount < processedReviews.length && (
                                     <div className="show-more-container">
                                         <button className="show-more-btn" onClick={showMoreReviews}>
                                             Показать ещё
@@ -186,7 +213,11 @@ export default function WorkPage({ category, workType }) {
                                 )}
                             </>
                         ) : (
-                            <p className="no-reviews">Будьте первым, кто оставит рецензию!</p>
+                            reviewFilter === 'my' ? (
+                                <p className="no-reviews">Вы пока не писали рецензию на это произведение.</p>
+                            ) : (
+                                <p className="no-reviews">Будьте первым, кто оставит рецензию!</p>
+                            )
                         )}
                     </div>
                 </div>
