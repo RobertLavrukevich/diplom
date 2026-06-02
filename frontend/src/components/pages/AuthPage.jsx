@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import '/src/styles/AuthPage.css'
+import '/src/styles/AuthPage.css';
 
 export default function AuthPage() {
     const [isLogin, setIsLogin] = useState(true);
-    const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+    const [formData, setFormData] = useState({ username: '', email: '', password: '', confirmPassword: '' });
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { login } = useContext(AuthContext);
@@ -34,14 +34,19 @@ export default function AuthPage() {
 
         if (!formData.password) {
             newErrors.password = 'Пароль обязателен';
-        } 
-        // else if (formData.password.length < 6) {
-        //     newErrors.password = 'Пароль должен содержать минимум 6 символов';
-        // } else if (!isLogin && formData.password.length > 100) {
-        //     newErrors.password = 'Пароль не должен превышать 100 символов';
-        // } else if (!isLogin && !/(?=.*[a-z])(?=.*[A-Z])/.test(formData.password)) {
-        //     newErrors.password = 'Пароль должен содержать хотя бы одну заглавную и одну строчную букву';
-        // }
+        } else if (formData.password.length < 6) {
+            newErrors.password = 'Пароль должен содержать минимум 6 символов';
+        } else if (!isLogin && formData.password.length > 100) {
+            newErrors.password = 'Пароль не должен превышать 100 символов';
+        }
+
+        if (!isLogin) {
+            if (!formData.confirmPassword) {
+                newErrors.confirmPassword = 'Подтвердите пароль';
+            } else if (formData.password !== formData.confirmPassword) {
+                newErrors.confirmPassword = 'Пароли не совпадают';
+            }
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -55,7 +60,6 @@ export default function AuthPage() {
         }
 
         setIsSubmitting(true);
-        
         const endpoint = isLogin ? 'authorisation.php' : 'registration.php';
         
         try {
@@ -66,6 +70,7 @@ export default function AuthPage() {
                 },
                 body: JSON.stringify(formData)
             });
+            
             const result = await response.json();
 
             if (result.status === 'success') {
@@ -74,15 +79,19 @@ export default function AuthPage() {
                     navigate('/account');
                 } else {
                     setIsLogin(true);
-                    setFormData({ username: '', email: '', password: '' });
+                    setFormData({ username: '', email: '', password: '', confirmPassword: '' });
                     setErrors({});
                     alert('Регистрация успешна! Теперь войдите.');
                 }
             } else {
-                alert(result.message);
+                if (result.field) {
+                    setErrors(prev => ({ ...prev, [result.field]: result.message }));
+                } else {
+                    setErrors(prev => ({ ...prev, common: result.message }));
+                }
             }
         } catch (error) {
-            alert('Ошибка соединения с сервером');
+            setErrors(prev => ({ ...prev, common: 'Ошибка соединения с сервером' }));
         } finally {
             setIsSubmitting(false);
         }
@@ -93,6 +102,9 @@ export default function AuthPage() {
         setFormData({ ...formData, [name]: value });
         if (errors[name]) {
             setErrors({ ...errors, [name]: '' });
+        }
+        if (errors.common) {
+            setErrors({ ...errors, common: '' });
         }
     };
 
@@ -105,6 +117,8 @@ export default function AuthPage() {
                         {isLogin ? 'Добро пожаловать обратно' : 'Создайте новый аккаунт'}
                     </div>
                 </div>
+
+                {errors.common && <div className="error-message common-error">{errors.common}</div>}
 
                 <form onSubmit={handleSubmit} className="auth-form">
                     {!isLogin && (
@@ -151,6 +165,22 @@ export default function AuthPage() {
                         {errors.password && <span className="error-message">{errors.password}</span>}
                     </div>
 
+                    {!isLogin && (
+                        <div className="form-group">
+                            <label htmlFor="confirmPassword">Подтверждение пароля</label>
+                            <input 
+                                type="password" 
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Повторите пароль" 
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                                className={errors.confirmPassword ? 'error' : ''}
+                            />
+                            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+                        </div>
+                    )}
+
                     <button 
                         type="submit" 
                         className="auth-submit-btn"
@@ -165,7 +195,7 @@ export default function AuthPage() {
                         onClick={() => {
                             setIsLogin(!isLogin);
                             setErrors({});
-                            setFormData({ username: '', email: '', password: '' });
+                            setFormData({ username: '', email: '', password: '', confirmPassword: '' });
                         }} 
                         className="auth-switch-btn"
                     >

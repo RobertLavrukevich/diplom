@@ -137,6 +137,18 @@
     padding-left: 4px;
     border-left: 2px solid #ff0000;
 }
+.error-message.common-error {
+    background: #fff5f5;
+    color: #ff0000;
+    border: 1.5px solid #ff0000;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    border-left: 4px solid #ff0000; 
+}
 
 .password-hint {
     font-size: 11px;

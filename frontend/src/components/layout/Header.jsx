@@ -83,7 +83,7 @@ export default function Header({ category}) {
                         ТОП-30
                     </Link>
                     <Link to={`${basePath}/faq`} className={location.pathname.includes('/faq') ? 'active' : ''}>
-                        <img src="/icons/question-circle-svgrepo-com.svg" className='icon' alt="faq" />
+                        <img src="/icons/question-circle-svgrepo-com.svg" className='icon' alt="faq" style={{marginTop: "2px"}}/>
                         FAQ
                     </Link>
                     {user && Number(user.role_id) === 2 && (

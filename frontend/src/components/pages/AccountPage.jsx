@@ -3,6 +3,7 @@ import { useState, useEffect, } from 'react'
 import { useContext } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom'
+import UserStats from '../OtherComponents/UserStats';
 import CommentCard from '../cards/CommentCard';
 
 const ActivityButton = ({ active, onClick, children }) => {
@@ -10,7 +11,6 @@ const ActivityButton = ({ active, onClick, children }) => {
     <button className={`activity-btn ${active ? 'active' : ''}`} onClick={onClick}>{children} </button>
   );
 };
-
 
 const MyReviews = ({ reviews, onDeleteClick }) => {
   if (reviews.length === 0) {
@@ -146,9 +146,14 @@ export default function AccountPage() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState(null);
+  const [accountStats, setAccountStats] = useState(null);
 
 useEffect(() => {
     if (user && user.id) {
+      fetch(`http://localhost:8000/public/user/get_user_info.php?user_id=${user.id}`)
+        .then(res => res.json())
+        .then(data => !data.error && setAccountStats(data.stats));
+
       fetch(`http://localhost:8000/public/user/get_user_reviews.php?user_id=${user.id}`)
         .then(res => res.json())
         .then(data => !data.error && setUserReviews(data));
@@ -194,6 +199,7 @@ useEffect(() => {
 
         if (data.success) {
             setUserReviews(prev => prev.filter(review => review.id !== selectedReviewId));
+            setAccountStats(prev => prev ? { ...prev, reviews: prev.reviews - 1 } : null);
             handleCloseModal();
         } else {
             alert(data.error || "Не удалось удалить рецензию");
@@ -236,9 +242,11 @@ useEffect(() => {
             <h3 className='username'>{user.username}</h3>
             <h4 className='usermail'>Почта: {user.email}</h4>
             <h4 className='userdate'>Дата регистрации: {registrationDate}</h4>
+            <UserStats stats={accountStats} />
           </div>
           <button className='exit-btn' onClick={handleLogout}>Выйти</button>
         </div>
+        
         
         <div className='user-activity'>
           <div className='activity-buttons'>

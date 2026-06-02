@@ -2,6 +2,7 @@ import '/src/styles/AccountPage.css';
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
+import UserStats from '../OtherComponents/UserStats';
 import CommentCard from '../cards/CommentCard';
 
 const ActivityButton = ({ active, onClick, children }) => {
@@ -183,6 +184,11 @@ export default function UserPage() {
         .then(data => {
             if (data.status === 'subscribed') setIsSubscribed(true);
             if (data.status === 'unsubscribed') setIsSubscribed(false);
+            
+            setTargetUser(prev => ({
+                ...prev,
+                stats: { ...prev.stats, followers: prev.stats.followers + change }
+            }));
         })
         .catch(err => console.error("Ошибка подписки:", err));
     };
@@ -217,7 +223,7 @@ export default function UserPage() {
                     <div className='userinfo'>
                         <h3 className='username'>{targetUser.username}</h3>
                         <h4 className='userdate'>Дата регистрации: {registrationDate}</h4>
-                        
+                        <UserStats stats={targetUser.stats} />
                         {currentUser && currentUser.id !== targetUser.id && (
                             <button 
                                 className={`subscribe-btn ${isSubscribed ? 'active' : ''}`} 
