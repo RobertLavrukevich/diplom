@@ -368,6 +368,68 @@
 
 
 
+.status-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.status-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border: 1px solid #eaeaea;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.status-type {
+  font-size: 0.8rem;
+  color: #020202;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.status-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: black;
+}
+
+.status-author {
+  font-weight: normal;
+  color: #000000;
+}
+
+.status-date {
+  font-size: 0.85rem;
+  color: #a0a0a0;
+}
+
+.status-indicator-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px;
+}
+
+.status-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+
 @media (max-width: 768px) {
   .accountblock {
     padding: 20px;

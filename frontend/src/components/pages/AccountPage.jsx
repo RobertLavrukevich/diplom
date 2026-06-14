@@ -138,11 +138,53 @@ const Subscriptions = ({ userId }) => {
   );
 };
 
+
+const ReviewStatuses = ({ statuses }) => {
+  if (!statuses || statuses.length === 0) {
+    return <p className="no-data">Вы еще не отправляли рецензий.</p>;
+  }
+
+  const getStatusConfig = (status) => {
+    switch (status) {
+      case 'published': return { color: '#28a745', label: 'Опубликовано' };
+      case 'pending': return { color: '#ffc107', label: 'На модерации' };
+      case 'rejected': return { color: '#dc3545', label: 'Отклонено' };
+      default: return { color: '#6c757d', label: 'Неизвестно' };
+    }
+  };
+
+  return (
+    <div className="status-grid">
+      {statuses.map((item) => {
+        const { color, label } = getStatusConfig(item.status);
+        const date = new Date(item.created_at).toLocaleDateString('ru-RU');
+        const authorOrActor = item.singers || item.actors;
+
+        return (
+          <div key={item.id} className="status-card">
+            <div className="status-info">
+              <span className="status-type">{item.work_type_name}</span>
+              <h4 className="status-title">{item.work_title} <span className="status-author">— {authorOrActor}</span></h4>
+              <span className="status-date">{date}</span>
+            </div>
+            <div className="status-indicator-block" title={label}>
+              <div className="status-circle" style={{ backgroundColor: color }}></div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+
+
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState('reviews');
   const { user, logout } = useContext(AuthContext);
   const [userReviews, setUserReviews] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [reviewStatuses, setReviewStatuses] = useState([]);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState(null);
@@ -158,6 +200,10 @@ useEffect(() => {
         .then(res => res.json())
         .then(data => !data.error && setUserReviews(data));
       
+      fetch(`http://localhost:8000/public/user/get_user_review_statuses.php?user_id=${user.id}`)
+        .then(res => res.json())
+        .then(data => !data.error && setReviewStatuses(data));
+
       fetch(`http://localhost:8000/public/user/get_user_favorites.php?user_id=${user.id}`)
         .then(res => res.json())
         .then(data => !data.error && setFavorites(data));
@@ -192,13 +238,14 @@ useEffect(() => {
     try {
         const response = await fetch(`http://localhost:8000/public/social/delete_review.php`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({ user_id: user.id, review_id: selectedReviewId })
         });
         const data = await response.json();
 
         if (data.success) {
             setUserReviews(prev => prev.filter(review => review.id !== selectedReviewId));
+            setReviewStatuses(prev => prev.filter(review => review.id !== selectedReviewId));
             setAccountStats(prev => prev ? { ...prev, reviews: prev.reviews - 1 } : null);
             handleCloseModal();
         } else {
@@ -222,6 +269,8 @@ useEffect(() => {
         return <LikedItems favorites={favorites} />;
       case 'subscriptions':
         return <Subscriptions userId={user.id} />;
+      case 'status':
+        return <ReviewStatuses statuses={reviewStatuses} />;
       default:
         return null;
     }
@@ -262,6 +311,10 @@ useEffect(() => {
               active={activeTab === 'liked'} 
               onClick={() => setActiveTab('liked')}
             >Понравилось</ActivityButton>
+            <ActivityButton 
+              active={activeTab === 'status'} 
+              onClick={() => setActiveTab('status')}
+            >Статус</ActivityButton>
           </div>
           
           <div className='activity-result'>

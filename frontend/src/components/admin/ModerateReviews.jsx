@@ -32,7 +32,7 @@ export default function ModerateReviews() {
                     <h4>{r.title} (К работе: {r.work_title})</h4>
                     <p>{r.content}</p>
                     <button className="btn-approve" onClick={() => handleAction(r.id, 'approve')}>Опубликовать</button>
-                    <button className="btn-reject" onClick={() => handleAction(r.id, 'reject')} style={{backgroundColor: 'red'}}>Удалить</button>
+                    <button className="btn-reject" onClick={() => handleAction(r.id, 'reject')} style={{backgroundColor: 'red'}}>Отклонить</button>
                 </div>
             ))}
         </div>

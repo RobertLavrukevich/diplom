@@ -8,6 +8,8 @@ export default function CommentForm({ workId, onReviewPosted }) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState('');
+    
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +19,6 @@ export default function CommentForm({ workId, onReviewPosted }) {
             alert("Войдите, чтобы оставить рецензию");
             return;
         }
-
 
         if (!title.trim() || !content.trim()) {
             setError("Пожалуйста, заполните заголовок и текст рецензии");
@@ -44,41 +45,42 @@ export default function CommentForm({ workId, onReviewPosted }) {
                 setTitle('');
                 setContent('');
                 setRating(50);
+                
+                setShowSuccessModal(true);
+                
                 onReviewPosted();
             }
         } catch (error) {
             console.error("Ошибка отправки:", error);
+            setError("Произошла ошибка при отправке. Попробуйте позже.");
         }
     };
 
     return (
         <div className='reviewblock'>
-   <div className="review-rules-container">
-                 <h3 className="rules-title">Правила написания рецензий</h3>
-                
-                 <ul className="rules-list">
-                     <li className="rule-item">
-                         <span className="rule-bullet">•</span>
-                         <span className="rule-text">без мата</span>
-                     </li>
-                    
-                     <li className="rule-item">
-                         <span className="rule-bullet">•</span>
-                         <span className="rule-text">без оскорблений</span>
-                     </li>
-                    
-                     <li className="rule-item">
-                         <span className="rule-bullet">•</span>
-                         <span className="rule-text">без рекламы и ссылок</span>
-                     </li>
-                    
-                     <li className="rule-item">
-                         <span className="rule-bullet">•</span>
-                         <span className="rule-text">содержательные</span>
-                     </li>
-                 </ul>
-             </div>            
-             <div className='form-comment'>
+            <div className="review-rules-container">
+                <h3 className="rules-title">Правила написания рецензий</h3>
+                <ul className="rules-list">
+                    <li className="rule-item">
+                        <span className="rule-bullet">•</span>
+                        <span className="rule-text">без мата</span>
+                    </li>
+                    <li className="rule-item">
+                        <span className="rule-bullet">•</span>
+                        <span className="rule-text">без оскорблений</span>
+                    </li>
+                    <li className="rule-item">
+                        <span className="rule-bullet">•</span>
+                        <span className="rule-text">без рекламы и ссылок</span>
+                    </li>
+                    <li className="rule-item">
+                        <span className="rule-bullet">•</span>
+                        <span className="rule-text">содержательные</span>
+                    </li>
+                </ul>
+            </div>            
+
+            <div className='form-comment'>
                 <form onSubmit={handleSubmit}>
                     <div className='rating-block'>
                         <label>Ваша оценка: {rating}</label>
@@ -100,6 +102,22 @@ export default function CommentForm({ workId, onReviewPosted }) {
                     </div>
                 </form>
             </div>
+
+            {showSuccessModal && (
+                <div className="review-modal-overlay">
+                    <div className="review-modal-content">
+                        <div className="review-modal-icon">⏳</div>
+                        <h4>Рецензия успешно создана!</h4>
+                        <p>Она отправлена на модерацию и появится на странице произведения сразу после проверки администратором.</p>
+                        <button 
+                            className="review-modal-close-btn" 
+                            onClick={() => setShowSuccessModal(false)}
+                        >
+                            Хорошо
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

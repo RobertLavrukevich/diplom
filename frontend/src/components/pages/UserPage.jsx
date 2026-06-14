@@ -182,12 +182,22 @@ export default function UserPage() {
         })
         .then(res => res.json())
         .then(data => {
-            if (data.status === 'subscribed') setIsSubscribed(true);
-            if (data.status === 'unsubscribed') setIsSubscribed(false);
+            let countChange = 0;
+
+            if (data.status === 'subscribed') {
+                setIsSubscribed(true);
+                countChange = 1;
+            } else if (data.status === 'unsubscribed') {
+                setIsSubscribed(false);
+                countChange = -1;
+            }
             
             setTargetUser(prev => ({
                 ...prev,
-                stats: { ...prev.stats, followers: prev.stats.followers + change }
+                stats: { 
+                    ...prev.stats, 
+                    followers: prev.stats.followers + countChange 
+                }
             }));
         })
         .catch(err => console.error("Ошибка подписки:", err));

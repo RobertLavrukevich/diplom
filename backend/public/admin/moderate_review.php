@@ -1,12 +1,25 @@
 <?php
+header('Access-Control-Allow-Credentials: true');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
 require_once '../../config/db.php';
 require_once '../../includes/check_admin.php';
 
 verifyAdminOrDie($pdo); 
 
 $data = json_decode(file_get_contents("php://input"), true);
-$id = $data['id'];
-$action = $data['action']; 
+$id = $data['id'] ?? null;
+$action = $data['action'] ?? null; 
+
+if (!$id || !$action) {
+    http_response_code(400);
+    echo json_encode(["error" => "Не переданы обязательные параметры"]);
+    exit;
+}
 
 if ($action === 'approve') {
     try {
@@ -39,8 +52,17 @@ if ($action === 'approve') {
         http_response_code(500);
         echo json_encode(["error" => $e->getMessage()]);
     }
+} elseif ($action === 'reject') {
+    try {
+        $stmt = $pdo->prepare("UPDATE Reviews SET status = 'rejected' WHERE id = ?");
+        $stmt->execute([$id]);
+        echo json_encode(["status" => "rejected"]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(["error" => $e->getMessage()]);
+    }
 } else {
-    $stmt = $pdo->prepare("DELETE FROM Reviews WHERE id = ?");
-    $stmt->execute([$id]);
-    echo json_encode(["status" => "deleted"]);
+    http_response_code(400);
+    echo json_encode(["error" => "Неизвестное действие"]);
 }
+?>
